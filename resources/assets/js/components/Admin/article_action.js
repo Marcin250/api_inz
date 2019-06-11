@@ -7,16 +7,17 @@ const Button = styled.button`
   justify-content:space-between;
   align-items:center;
   cursor:pointer;
-  background:${variablesCSS.blue};
+  background:${variablesCSS.gray};
   outline:none;
-  border:1px solid #999;
   border-radius:${variablesCSS.radius};
   padding:8px 8px;
-  margin:2px 0;
-  margin-right: 6px;
+  margin:2px 6px 2px 0;
+  border:none;
   svg {
     color:#fff !important;
-    margin-right: 3px;
+  }
+  &:hover {
+    background:${variablesCSS.blue}
   }
 `
 
@@ -27,7 +28,7 @@ const Text = styled.span`
 
 const ActionButton = props => {
   return (
-    <Button onClick={props.onClick} >
+    <Button onClick={props.onClick} title={props.title} >
       <Fragment>
         { props.icon }
         <Text>{ props.name }</Text>

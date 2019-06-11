@@ -62,7 +62,7 @@ class SingleArticle extends Component {
 
     const currentID = Number(this.props.match.params.id);
     await this.props.fetchArticle(currentID);
-    const latest = await API.get(`articles_latest/15`),
+    const latest = await API.get(`articles_latest/10`),
           neighbours = await API.get(`articles_show_neighbours/${currentID}`);
 
     this.setState({article: this.props.article, latest, neighbours, loadingStatus: false });

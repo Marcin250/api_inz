@@ -63,8 +63,11 @@ const ArticleInfo = styled.header`
 
 const Title = styled.h3`
   line-height:1;
-  font-size:2em;
-  font-family:'Bebas';
+  font-size:1.5em;
+  font-family:'RSBold';
+  @media only screen and (min-width: 640px) {
+    font-size:1.8em;
+  }
 `
 
 const Category = styled.span`

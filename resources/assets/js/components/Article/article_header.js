@@ -5,6 +5,7 @@ import { IoIosEye, IoIosHeart } from 'react-icons/io';
 import {incLikesCount, decLikesCount} from '../../actions/';
 import { connect } from 'react-redux';
 import Notification from '../Reusable/modal_notification';
+import variablesCSS from '../../css/variables';
 
 const Header = styled.header`
   background:white;
@@ -36,12 +37,12 @@ const Item = styled.div`
   cursor:default;
   cursor: pointer;
   align-items:center;
-  color:#c8c8c8;
+  color:${variablesCSS.gray};
   &:not(:last-child) {
     margin-right:8px;
   }
   svg {
-    color:#c8c8c8;
+    color:${variablesCSS.gray};
   }
 `
 

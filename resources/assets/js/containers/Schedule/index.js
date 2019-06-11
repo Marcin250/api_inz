@@ -10,7 +10,7 @@ import { fetchSchedule } from '../../actions/';
 
 const Main = styled.main`
   display:flex;
-  padding:0 10px;
+  padding:0 15px;
   flex-flow:column;
   position:relative;
   color:#1e1e1e;
@@ -39,7 +39,7 @@ class Schedule extends Component {
 
   render() {
     const { isFetching } = this.state;
-    
+
     return (
       <Fragment>
         <Helmet>

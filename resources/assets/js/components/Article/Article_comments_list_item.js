@@ -73,6 +73,7 @@ const Content = styled.p`
   padding:8px 0;
   margin-left:-50px;
   font-size:1.05em;
+  margin-top:10px;
   @media (min-width: 640px) {
     margin-left:0;
   }

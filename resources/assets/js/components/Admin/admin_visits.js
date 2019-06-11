@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import ReactChartkick, { LineChart } from 'react-chartkick';
+import variablesCSS from '../../css/variables';
 import Chart from 'chart.js';
 
 const FlexWrapper = styled.div`
@@ -12,7 +13,29 @@ const FlexWrapper = styled.div`
   background:#fff;
   border-radius:3px;
   color:#1c232e;
-  padding:30px 5px;
+`
+
+const ChartContainer = styled.div`
+  margin:0 15px;
+  width:calc(100% - 30px);
+`
+
+const Topic = styled.span`
+  display:block;
+`
+
+const SubTopic = styled.span`
+  font-size:.7em;
+  letter-spacing:.35px;
+  font-family:${variablesCSS.categoryFont};
+  text-transform: uppercase;
+`
+
+const Header = styled.div`
+  margin-bottom:20px;
+  padding:15px 20px;
+  width:100%;
+  background:${variablesCSS.gray};
 `
 
 const Title = styled.span`
@@ -40,15 +63,19 @@ const Visits = props => {
 
   return (
     <FlexWrapper>
-      <Title>Wyświetlenia</Title>
-      <SubTitle>Unikatowa liczba dziennych wyświetleń</SubTitle>
-      <LineChart
-        data={newArray}
-        colors={['#1c232e']}
-        xtitle='Dzień tygodnia'
-        ytitle="Wyświetlenia"
-        messages={{ empty: 'Brak danych' }}
-      />
+      <Header>
+        <SubTopic>Wyświetlenia</SubTopic>
+        <Topic>Unikatowa liczba dziennych wyświetleń</Topic>
+      </Header>
+      <ChartContainer>
+        <LineChart
+          data={newArray}
+          colors={['#1c232e']}
+          xtitle='Dzień tygodnia'
+          ytitle="Wyświetlenia"
+          messages={{ empty: 'Brak danych' }}
+        />
+      </ChartContainer>
     </FlexWrapper>
   )
 }

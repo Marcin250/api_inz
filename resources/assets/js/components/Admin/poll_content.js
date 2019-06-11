@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Title from './admin_content_title';
 import Filters from './admin_filters';
-import PollTable from './poll_table';
+import CurrentPoll from './poll_current';
 import Button from '../Reusable/button';
 
 const Container = styled.section`
@@ -11,11 +11,6 @@ const Container = styled.section`
   margin:20px;
   margin-top:5px;
   align-items:center;
-  svg {
-    color:#c6c6c6;
-    font-size:1.25em;
-    font-family: 'SSPL';
-  }
 `
 
 const Wrapper = styled.section`
@@ -36,9 +31,7 @@ const ArticleContent = props => {
       <Wrapper>
         <Filters />
       </Wrapper>
-      <Wrapper>
-        <PollTable />
-      </Wrapper>
+      <CurrentPoll />
     </Container>
   );
 };

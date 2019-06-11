@@ -20,7 +20,7 @@ const Centered = styled.div`
 
 const Aside = props => (
   <Wrapper>
-    <SectionHeader>Ostatnio dodane</SectionHeader>
+    <SectionHeader margin='0 0 0 8px'>Ostatnio dodane</SectionHeader>
     <AsideList latest={props.latest} />
     <Centered>
       <Button

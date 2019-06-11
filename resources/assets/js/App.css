@@ -48,9 +48,6 @@
   src: url('/fonts/Avenir/AvenirNextLTPro-Bold.ttf') format('truetype');
 }
 
-
-
-
 @font-face {
   font-family: 'PantonBlack';
   src: url('/fonts/Panton/Panton-BlackCaps.otf') format('opentype');
@@ -95,7 +92,7 @@
 }
 
 a {
-  color:white;
+  color:#00529f;
   text-decoration:none;
   display:inline-block;
   line-height:1.5;

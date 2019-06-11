@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import variablesCSS from '../../css/variables';
 
 const Article = styled.article`
   flex: 1 1 255px;
   position:relative;
-  height: ${props => props.small ? '200px' : '400px'};
+  height:400px;
   color:#1e1e1e;
   margin:10px;
   overflow:hidden;
@@ -48,9 +49,12 @@ const ArticleInfo = styled.header`
 `
 
 const Title = styled.h3`
-  font-size:${props => props.small ? '1.7em' : '1.9em'};
+  font-size:1.5em;
   line-height:1;
-  font-family:'Bebas';
+  font-family:'RSBold';
+  @media only screen and (min-width: 640px) {
+    font-size:1.8em;
+  }
 `
 
 const Category = styled.span`

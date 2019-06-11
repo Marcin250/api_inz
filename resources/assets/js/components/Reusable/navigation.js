@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import variablesCSS from '../../css/variables';
 
 const Nav = styled.nav`
   display:none;
   color:#00529f;
   font-size:.8em;
-  font-fmily:'AvenirLTD';
+  font-family:'AvenirLTD';
   text-transform: uppercase;
   @media (min-width: 640px) {
     display:block;
@@ -18,10 +19,10 @@ const List = styled.ul`
 `
 
 const ListLink = styled(Link)`
-  color:inherit;
   transition: all .3s;
   padding:30px 10px;
   position:relative;
+  color:${variablesCSS.blue};
   &:before {
     position:absolute;
     content: '';
@@ -29,12 +30,11 @@ const ListLink = styled(Link)`
     height:3px;
     bottom:-3px;
     left:50%;
-    background:#00529f;
+    background:${variablesCSS.blue};
     transform: translateX(-50%);
     transition:.2s all;
   }
   &:hover {
-    font-weight:bold;
     &:before {
       width:100%;
     }

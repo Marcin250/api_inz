@@ -21,7 +21,7 @@ import Wrapper from './wrapper';
 const Topbar = styled.header`
   width:100%;
   color:#00529f;
-  border-bottom:2px solid #ededed;
+  border-bottom:3px solid #ededed;
   position:sticky;
   top:0;
   z-index:999;

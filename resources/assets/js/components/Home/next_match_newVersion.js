@@ -134,7 +134,7 @@ const Team = styled.div`
 const Infomation = styled.span`
   position:relative;
   z-index:1;
-  font-size:1.3em;
+  font-size:1.1em;
   text-align:center;
 `
 
@@ -166,7 +166,7 @@ const NextMatch = props => {
             <TeamName>{away_team.short_name}</TeamName>
           </Team>
         </Fragment>
-      ) : <Infomation>Koniec sezonu. Brak nadchodzących meczów.</Infomation>
+      ) : <Infomation>Koniec sezonu – brak nadchodzących meczów.</Infomation>
     }
     </Section>
   )

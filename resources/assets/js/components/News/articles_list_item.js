@@ -63,7 +63,7 @@ const ArticleInfo = styled.header`
   letter-spacing:.5px;
   flex:2;
   line-height:1;
-  color:#1e1e1e;
+  color:${variableCSS.black};
   width:100%;
   @media (min-width: 480px) {
     border-left:2px solid ${variableCSS.black};
@@ -81,9 +81,9 @@ const Title = styled.h3`
 const Category = styled.span`
   display:block;
   margin-top:5px;
-  font-size:.85em;
-  color:#ee324e;
-  font-family:'AvenirLTD'
+  font-size:.8em;
+  color:${variableCSS.black};
+  font-family:'AvenirLTB'
 `
 
 const Description = styled.span`

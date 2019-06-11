@@ -3,10 +3,11 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import dateConverter from '../../helpers/dateConverter';
 import createLink from '../../helpers/createLink';
+import variablesCSS from '../../css/variables';
 
 const Article = styled.article`
   display:flex;
-  border-left:3px solid #FEBE10;
+  border-left:4px solid ${variablesCSS.gray};
   margin:10px;
   min-height:80px;
   align-self: flex-start;
@@ -24,7 +25,7 @@ const LinkTo = styled(Link)`
   display:flex;
   flex-flow:row nowrap;
   justify-content:flex-start;
-  text-transform:uppercase;
+
 `
 
 const ImageWrapper = styled.figure`
@@ -53,7 +54,7 @@ const Header = styled.header`
   flex-flow:column wrap;
 `
 
-const Date = styled.span`
+const Added = styled.span`
   display:block;
   font-size:.8em;
 `
@@ -63,13 +64,13 @@ const Wrapper = styled.div`
 `
 
 const Title = styled.h4`
-  font-size:1em;
-  font-family:'AvenirLTB';
+  font-size:1.1em;
 `
 
 const Category = styled.footer`
-  font-size:.7em;
+  font-size:.85em;
   line-height:1;
+  color:${variablesCSS.gray};
   margin-top:4px;
 `
 
@@ -85,7 +86,7 @@ const SmallNewsItem = props => {
         </ImageWrapper>
         <Header>
           <Wrapper>
-            <Date>{create_date}</Date>
+            <Added>{new Date(create_date).toLocaleString()}</Added>
             <Title>{title}</Title>
           </Wrapper>
           <Category>{category}</Category>

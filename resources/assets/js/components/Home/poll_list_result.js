@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import variablesCSS from '../../css/variables';
 
 const ListItem = styled.li`
   &:not(:last-child) {
@@ -9,9 +10,9 @@ const ListItem = styled.li`
 
 const Bar = styled.div`
   position:relative;
-  background:#ededed;
+  background:${variablesCSS.gray};
   border-radius:6px;
-  min-height:23px;
+  min-height:22px;
   overflow:hidden;
   color:#fff;
   &:before {
@@ -32,7 +33,7 @@ const Amount = styled.span`
   left:10px;
   top:49.8%;
   transform:translateY(-50%);
-  font-size:.9em;
+  font-size:.85em;
   color:${props => props.default || '#ffffff'};
 `
 

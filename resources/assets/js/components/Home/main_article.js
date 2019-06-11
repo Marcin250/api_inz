@@ -6,9 +6,9 @@ import { GoCommentDiscussion } from 'react-icons/go';
 import { Link } from 'react-router-dom';
 
 const Article = styled.article`
-  position:relative;
   width:100%;
   max-height:500px;
+  background:#1e1e1e;
   &:hover img {
     transform:scale(1.03);
   }
@@ -23,7 +23,9 @@ const Image = styled.img`
   }
 `
 
-const ImageWrapper = styled.figure`
+const ImageWrapper = styled.figure`;
+  max-width:1300px;
+  margin: 0 auto;
   height: 350px
   display:flex;
   justify-content:center;
@@ -48,11 +50,11 @@ const Category = styled.span`
 
 const Title = styled.h2`
   font-family: 'RSBold';
-  font-size:1.65em;
+  font-size:1.8em;
   line-height: 1.1em;
   color:#ffffff;
   @media (min-width: 480px) {
-    font-size: 1.9em;
+    font-size: 2.1em;
   }
   @media (min-width: 640px) {
     line-height: 1em;
@@ -64,21 +66,20 @@ const LinkTo = styled(Link)`
   margin:0 10px;
   max-width:700px;
   color:inherit;
-  &:hover ${Category} {
-    &:before {
-      width:calc(100% - 101px);
-    }
+  @media (min-width: 1300px) {
+    margin-left:30px;
   }
 `
 
 const Test = styled.div`
   margin:0 auto;
+    position:relative
   max-width:1300px;
 `
 
 const BlackOverlay = styled.div`
   position:absolute;
-  background: linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,0.75) 65%);
+  background: linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,0.6) 65%);
   padding-top:100px;
   padding-bottom:50px;
   width:100%;
@@ -99,7 +100,8 @@ const Meta = styled.div`
     margin-right:3px;
   }
   @media (min-width: 640px) {
-    font-size:.95em;
+    font-size:.9em;
+    margin-bottom:6px;
   }
 `
 
@@ -121,18 +123,18 @@ const MainArticle = props => {
       <ImageWrapper>
         <Image src={image}  title={title} alt={title} />
       </ImageWrapper>
-      <BlackOverlay>
-      <Test>
-        <LinkTo to={link}>
-          <Meta>
-            <Date><FaRegClock/> {dateConverter.toStageDate(create_date)}</Date>
-            <Comments><GoCommentDiscussion /> {comments_count} komentarzy</Comments>
-          </Meta>
-          <Title>{title}</Title>
-          <Category>{category}</Category>
-        </LinkTo>
+        <Test>
+        <BlackOverlay>
+          <LinkTo to={link}>
+            <Meta>
+              <Date><FaRegClock/> {dateConverter.toStageDate(create_date)}</Date>
+              <Comments><GoCommentDiscussion />{comments_count > 0 ? ` ${comments_count} komentarzy` : ' brak komentarzy'}</Comments>
+            </Meta>
+            <Title>{title}</Title>
+            <Category>{category}</Category>
+          </LinkTo>
+          </BlackOverlay>
         </Test>
-      </BlackOverlay>
     </Article>
   )
 }

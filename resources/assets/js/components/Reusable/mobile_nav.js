@@ -38,7 +38,7 @@ const NavWrapper = styled.div`
 const MobileNav = styled.nav`
   z-index:998;
   width:42px;
-  top:111px;
+  top:112px;
   background:#fff;
   height:calc(100% - 53px);
   position:fixed;

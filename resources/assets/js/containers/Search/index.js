@@ -11,7 +11,7 @@ import { API } from '../../helpers/api';
 const Main = styled.main`
   max-width: 1300px;
   color:#1e1e1e;
-  padding:0 10px;
+  padding:0 15px;
   margin:40px auto;
 `
 

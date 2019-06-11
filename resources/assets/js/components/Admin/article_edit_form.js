@@ -25,7 +25,7 @@ const Container = styled.section`
 
 const Background = styled.section`
   background:#fff;
-  padding:15px 20px;
+  padding:25px 35px;
   margin:1px 20px;
 `
 
@@ -37,79 +37,87 @@ const Input = styled.input`
 display:block;
 outline:none;
 width:100%;
-padding:12px;
-border-radius:10px;
-border:2px solid ${variablesCSS.gray};
-background:${variablesCSS.gray};
-&:focus {
-  border: 2px solid ${variablesCSS.darkGray};
-}
+border:none;
+height:45px;
+padding:14px 12px;
+border-radius:2px;
+color:${variablesCSS.black};
+background:${variablesCSS.inputBg};
 &[type='file'] {
   border:none;
   display:none;
 }
 &::placeholder {
-  color:#1e1e1e;
+  color:${variablesCSS.black};
 }
 `
 
 const Textarea = styled.textarea`
-width:100%;
-resize: vertical;
-border-radius:10px;
-padding:12px;
-min-height:175px;
-max-height:400px;
-outline:none;
-background:${variablesCSS.gray};
-border:2px solid ${variablesCSS.gray};
-&:focus {
-  border: 2px solid ${variablesCSS.darkGray};
-}
+  width:100%;
+  resize: vertical;
+  min-height:175px;
+  max-height:400px;
+  outline:none;
+  padding:14px 12px;
+  border:none;
+  border-radius:2px;
+  color:${variablesCSS.black};
+  background:${variablesCSS.inputBg};
 &::placeholder {
   color:#1e1e1e;
 }
+`
+
+const Label = styled.span`
+  display:block;
+  margin-bottom:5px;
+  font-size:.9em;
+  letter-spacing:.5px;
 `
 
 const Information = styled.p`
   margin-bottom:15px;
 `
 
-const BtnWrapper = styled.div`
+const Footer = styled.div`
   display:flex;
   justify-content:flex-start;
-  > button:not(:last-child) {
-    margin-right:10px;
-  }
+
 `
 
 const Select = styled.select`
-  padding:13px;
-  border-radius:12px;
   width:100%;
   border:none;
-  background:${variablesCSS.gray};
   outline:none;
+  padding:14px 12px 14px 9px;
+  border-radius:2px;
+  color:${variablesCSS.black};
+  background:${variablesCSS.inputBg};
 `
 
 const UploadLabel = styled.label`
-  display:flex;
-  cursor: pointer;
-  height:43px;
-  border-radius:${variablesCSS.radius};
-  padding:14px;
-  letter-spacing:.35px;
-  font-size:.85em;
-  background:${variablesCSS.gray};
-  svg {
-    font-size:1.2em;
-    margin-right:4px;
-  }
+display:flex;
+cursor: pointer;
+height:45px;
+letter-spacing:.35px;
+font-size:.85em;
+padding:15px 12px;
+border-radius:2px;
+color:${variablesCSS.black};
+background:${variablesCSS.inputBg};
+svg {
+  font-size:1.2em;
+  margin-right:4px;
+  color:inherit;
+}
 `
 
 const ImagePreview = styled.span`
-  display:inline-block;
+  display:block;
   cursor:pointer;
+  font-size:.9em;
+  text-align:right;
+  color:${variablesCSS.blue};
   &:hover {
     text-decoration:underline;
   }
@@ -242,9 +250,11 @@ class ArticleEditForm extends Component {
           <Fragment>
             <form>
               <Field>
-              <Input type='text' placeholder='Tytuł'  maxLength='75' onChange={(e) => this.setState({title: e.target.value})} value={ title }  />
+                <Label>Tytuł <span style={{color:'#ee324e'}}>*</span></Label>
+                <Input type='text' placeholder='Tytuł'  maxLength='75' onChange={(e) => this.setState({title: e.target.value})} value={ title }  />
               </Field>
               <Field>
+                <Label>Kategoria <span style={{color:'#ee324e'}}>*</span></Label>
                 <Select onChange={this.handleSelect} value={category}>
                   {
                     article.categories.map(item => <option key={item.idcategory} value={item.idcategory}>{item.name}</option>)
@@ -252,7 +262,13 @@ class ArticleEditForm extends Component {
                 </Select>
               </Field>
               <Field>
+                <Label>Treść <span style={{color:'#ee324e'}}>*</span></Label>
                 <Textarea type='text' placeholder='Opis' onChange={(e) => this.setState({content: e.target.value})} value={ content } />
+              </Field>
+              <Field>
+                <Label>Zdjęcie <span style={{color:'#ee324e'}}>*</span></Label>
+                <UploadLabel htmlFor='upload'><FaRegFileImage />Wybierz zdjęcie</UploadLabel>
+                <Input type='file' id='upload' onChange={(e) => this.setState({file: e.target.files[0]})} />
               </Field>
               <Field>
                 <ImagePreview onClick={() => this.setState({showImageModal: 'flex'})}>Podgląd aktualnego zdjęcia</ImagePreview>
@@ -260,25 +276,27 @@ class ArticleEditForm extends Component {
                   <img src={articleToEdit[0].image} title={articleToEdit[0].title} alt={articleToEdit[0].title} ref={this.imageModal}/>
                 </ImageModal>
               </Field>
-              <Field>
-                <UploadLabel htmlFor='upload'><FaRegFileImage />Wybierz zdjęcie</UploadLabel>
-                <Input type='file' id='upload' onChange={(e) => this.setState({file: e.target.files[0]})} />
-              </Field>
               </form>
-                <BtnWrapper>
-                  <Button name='&larr; Cofnij' colorBlue onClick={() => { this.props.history.goBack() }} />
+                <Footer>
                   <Button
-                    blue
-                    name='Edytuj'
+                    name='&larr; Cofnij'
+                    colorBlue margin='0 6px 0 0'
+                    onClick={() => { this.props.history.goBack() }} />
+                  <Button
+                    blue name='Edytuj'
+                    margin='0'
                     isFetching={fetchingStatus}
                     onClick={ () => { this.handleEdit() }} />
-                </BtnWrapper>
+                </Footer>
               </Fragment>
               </Background>
             ) : (
               <Background>
                 <Information>Wróc i ponownie wybierz artykuł.</Information>
-                <Button name='Powrót &larr;' colorBlue onClick={() => { this.props.history.goBack() }} />
+                <Button
+                  name='Powrót &larr;'
+                  blue margin='0'
+                  onClick={() => { this.props.history.goBack() }} />
               </Background>
             )
           }

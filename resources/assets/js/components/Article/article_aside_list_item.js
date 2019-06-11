@@ -8,13 +8,17 @@ const ListItem = styled.li`
   display:flex;
   flex-flow:row nowrap;
   justify-content:flex-start;
-      cursor:pointer;
-  padding:12px 5px;
+  cursor:pointer;
+  padding:12px 10px;
+  transition: all .4s;
   &:not(:last-child) {
     border-bottom:1px solid ${variablesCSS.gray};
   }
   &:hover {
     background: ${variablesCSS.gray};
+    time {
+      color:${variablesCSS.blue};
+    }
   }
 `
 
@@ -28,6 +32,7 @@ const Title = styled.h3`
 const Added = styled.time`
   font-size:.85em;
   color:#c8c8c8;
+  transition: all .4s;
 `
 
 const LinkTo = styled(Link)`
@@ -44,7 +49,7 @@ const AsideItem = props => {
       <article>
         <LinkTo to={link}>
           <Title>{title}</Title>
-          <Added>{new Date(create_date).toLocaleString()}</Added>
+          <Added dateTime={new Date(create_date)}>{new Date(create_date).toLocaleString()}</Added>
         </LinkTo>
       </article>
     </ListItem>

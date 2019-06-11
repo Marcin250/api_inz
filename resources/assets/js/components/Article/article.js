@@ -6,6 +6,7 @@ import Content from './article_content';
 import CommentSection from './article_comments';
 import Related from './article_related';
 import ArticleHeader from './article_header';
+import ArticleShare from './article_share';
 import { connect } from 'react-redux';
 
 const ArticleWrapper = styled.article`
@@ -26,6 +27,9 @@ const Wrapper = styled.section`
   background:white;
   @media (min-width: 480px) {
     padding-left:20px;
+    footer {
+      display:none;
+    }
   }
   @media (min-width: 900px) {
     padding:0 20px;
@@ -43,6 +47,7 @@ const Article = props => {
         <Wrapper>
           <ArticleHeader article = {article} />
           <Content article = {article} />
+          <ArticleShare />
           <Related neighbours = {neighbours} />
         </Wrapper>
       </Section>

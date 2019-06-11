@@ -30,7 +30,7 @@ const ArticleContent = props => {
       <Title>Twoje artykuły</Title>
       <Wrapper>
         <Link to='/admin/articles/add'>
-          <Button name='Dodaj artykuł' blue />
+          <Button name='Dodaj artykuł' blue margin='0' />
         </Link>
       </Wrapper>
       <Wrapper>

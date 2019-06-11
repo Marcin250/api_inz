@@ -9,7 +9,7 @@ const Btn = styled.button`
   cursor:pointer;
   padding:10px 20px;
   outline:none;
-  margin: 0 6px;
+  margin: ${props => props.margin ? props.margin : '0 6px'};
   min-width:${props => props.minWidth ? '105px' : 'initial'};
   width: ${props => props.fullWidth ? '100%' : 'initial'};
   color:${props => props.warning || props.blue ? '#ffffff' : 'rgb(119, 119, 119)'};
@@ -59,7 +59,8 @@ const Button = props => {
           warning={props.warning}
           minWidth={props.minWidth}
           fullWidth={props.fullWidth}
-          blue={props.blue}>
+          blue={props.blue}
+          margin={props.margin}>
           <Spinner>
             <div className="bounce1"></div>
             <div className="bounce2"></div>
@@ -74,6 +75,7 @@ const Button = props => {
           blue={props.blue}
           warning={props.warning}
           minWidth={props.minWidth}
+          margin={props.margin}
         >{props.name}</Btn>
       )
   )

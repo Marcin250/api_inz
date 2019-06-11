@@ -9,30 +9,37 @@ import { StoreAdminArticleToEdit, fetchAdminArticles, searchAdminArticles } from
 import { MdEdit, MdDeleteForever } from 'react-icons/md';
 import ModalNotification from '../Reusable/modal_notification';
 import ConfimationModal from '../Reusable/modal_confirmation';
+import createLink from '../../helpers/createLink';
+import dateConverter from '../../helpers/dateConverter';
 import variablesCSS from '../../css/variables';
 import { API } from '../../helpers/api';
+
+const Field = styled.td`
+  padding:10px;
+  font-size:.95em;
+`
 
 const Table = styled.table`
   width:100%;
   text-align:left;
   border-collapse: collapse;
+  &:first-of-type ${Field} {
+    padding:16px 10px;
+  }
 `
 
 const Title = styled.th`
-  padding:12px 5px;
-  border-top-left-radius:3px;
-  border-top-right-radius:3px;
-  border:1px solid #F3F4F8;
-  font-family:'SSPB';
-`
-
-const Field = styled.td`
-  padding:14px 5px;
+  text-transform: uppercase;
+  letter-spacing:.5px;
+  padding:16px 10px;
+  font-family:${variablesCSS.categoryFont};
+  background:${variablesCSS.gray};
+  font-size:.75em;
 `
 
 const Row = styled.tr`
   &:not(:last-child) {
-    border-bottom:1px solid #ededed;
+    border-bottom:1px solid ${variablesCSS.gray};
   }
 `
 
@@ -48,8 +55,8 @@ const CustomRadio = styled.label`
     top:0;
     width:16px;
     height:16px;
-    border-radius:6px;
-    border:2px solid ${variablesCSS.blue};
+    border-radius:${variablesCSS.radius};
+    border:2px solid ${variablesCSS.gray};
   }
 `
 
@@ -60,7 +67,7 @@ const CustomRadio = styled.label`
     position:absolute;
     left:3px;
     top:-1px;
-    color:${variablesCSS.blue};
+    color:${variablesCSS.gray};
  }
 `
 
@@ -74,6 +81,7 @@ class ArticleTable extends Component {
 
     this.state = {
       articles: [],
+      mainArticle: [],
       showConfirmationModal: false,
       showNotificationModal: false,
       modalType: '',
@@ -100,8 +108,9 @@ class ArticleTable extends Component {
     const { loadCounter } = this.props.admin;
     this.setState({fetchingStatus: true})
 
+    const mainArticle = await axios.get('/api/articles_latest_main/1');
     await this.props.fetchAdminArticles();
-    this.setState({articles: this.props.admin.ownArticles, fetchingStatus: false })
+    this.setState({articles: this.props.admin.ownArticles, mainArticle:mainArticle.data, fetchingStatus: false })
 
     //executes only after article was edited - push function with a state prop (article_edit_form.js - line 136)
     if(this.props.history.location.state !== undefined) {
@@ -171,7 +180,7 @@ class ArticleTable extends Component {
   }
 
   render() {
-    const { articles, fetchingStatus, showConfirmationModal, mainArticle, modalFetching } = this.state;
+    const { articles, fetchingStatus, showConfirmationModal, modalFetching, mainArticle } = this.state;
     const { searchKeyword } = this.props.admin;
 
     return (
@@ -181,14 +190,36 @@ class ArticleTable extends Component {
       ? (
         <div>
           <Table>
+          <thead>
+              <tr>
+                <Title>Na głównej</Title>
+                <Title>Data dodania</Title>
+                <Title>Autor</Title>
+                <Title>Kategoria</Title>
+                <Title>Tytuł</Title>
+                <Title>Odnośnik</Title>
+              </tr>
+            </thead>
+            <tbody>
+              <Row>
+                <Field>Tak</Field>
+                <Field>{dateConverter.toStageDate(mainArticle[0].create_date)}</Field>
+                <Field>{mainArticle[0].user.name}</Field>
+                <Field>{mainArticle[0].category}</Field>
+                <Field>{mainArticle[0].title}</Field>
+                <Field><Link to={createLink(mainArticle[0])} target='_blank'>zobacz na żywo</Link></Field>
+              </Row>
+            </tbody>
+          </Table>
+          <Table>
             <thead>
               <tr>
-                <Title>Data</Title>
-                <Title>Status</Title>
-                <Title>Tytuł</Title>
-                <Title>Głowny</Title>
-                <Title>Kategoria</Title>
-                <Title>Akcje</Title>
+                <Title title='Data dodania'>Data</Title>
+                <Title title='Status'>Status</Title>
+                <Title title='Tytuł'>Tytuł</Title>
+                <Title title='Artykuł dnia'>Gł.</Title>
+                <Title title='Kategoria'>Kategoria</Title>
+                <Title title='Akcje'>Akcje</Title>
               </tr>
             </thead>
             <tbody>
@@ -199,7 +230,7 @@ class ArticleTable extends Component {
                 item => {
                   return (
                       <Row key={item.idarticle}>
-                        <Field>{item.create_date}</Field>
+                        <Field>{new Date (item.create_date).toLocaleString()}</Field>
                         <Field>DODANY</Field>
                         <Field>{item.title}</Field>
                         <Field>
@@ -223,9 +254,9 @@ class ArticleTable extends Component {
                         <Field>{item.category}</Field>
                         <Field>
                         <Link to={`/admin/articles/edit/${item.idarticle}`} style={{display:'inline-block'}}>
-                          <ActionButton name='Edytuj' icon={ <MdEdit /> } onClick={() => { this.props.StoreAdminArticleToEdit(item) }} />
+                          <ActionButton title='Edytuj artykuł' icon={ <MdEdit /> } onClick={() => { this.props.StoreAdminArticleToEdit(item) }} />
                         </Link>
-                          <ActionButton name='Usuń' onClick={() => this.handleDelete(item.idarticle)} icon={ <MdDeleteForever /> } />
+                          <ActionButton title='Usuń artykuł' icon={ <MdDeleteForever /> } onClick={() => this.handleDelete(item.idarticle)} />
                         </Field>
                       </Row>
                       );

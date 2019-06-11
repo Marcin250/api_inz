@@ -46,12 +46,9 @@ class CategoriesList extends Component {
     return (
       <Container>
         {
-          article.categories.length ?
-          (
-            article.categories.map(item => <CategoryList setCategory={() => this.setCategory} key={ item.idcategory } item={ item } />)
-          ) : (
-            <MiniLoader />
-          )
+          article.categories.length
+          ? article.categories.map(item => <CategoryList setCategory={() => this.setCategory} key={ item.idcategory } item={ item } />)
+          : <MiniLoader />
         }
       </Container>
     )

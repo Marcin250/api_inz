@@ -19,7 +19,7 @@ const Container = styled.section`
 
 const Wrapper = styled.section`
   background:#fff;
-  padding:15px 20px;
+  padding:25px 35px;
   margin:1px 20px;
 `
 
@@ -31,70 +31,78 @@ const Input = styled.input`
   display:block;
   outline:none;
   width:100%;
-  padding:12px;
-  border-radius:10px;
-  border:2px solid ${variablesCSS.gray};
-  background:${variablesCSS.gray};
-  &:focus {
-    border: 2px solid ${variablesCSS.darkGray};
-  }
+  border:none;
+  height:45px;
+  padding:14px 12px;
+  border-radius:2px;
+  color:${variablesCSS.black};
+  background:#f2f2f2;
   &[type='file'] {
     display:none;
     border:none;
   }
   &::placeholder {
-    color:#1e1e1e;
+    color:${variablesCSS.black};
   }
+`
+
+const Label = styled.span`
+  display:block;
+  margin-bottom:5px;
+  font-size:.9em;
+  letter-spacing:.5px;
 `
 
 const UploadLabel = styled.label`
   display:flex;
   cursor: pointer;
-  height:43px;
-  border-radius:${variablesCSS.radius};
-  padding:14px;
+  height:45px;
   letter-spacing:.35px;
   font-size:.85em;
-  background:${variablesCSS.gray};
+  padding:15px 12px;
+  border-radius:2px;
+  color:${variablesCSS.black};
+  background:#f2f2f2;
   svg {
     font-size:1.2em;
     margin-right:4px;
+    color:inherit;
   }
 `
 
 const Textarea = styled.textarea`
   width:100%;
   resize: vertical;
-  border-radius:10px;
-  padding:12px;
   min-height:175px;
   max-height:400px;
   outline:none;
-  background:${variablesCSS.gray};
-  border:2px solid ${variablesCSS.gray};
-  &:focus {
-    border: 2px solid ${variablesCSS.darkGray};
-  }
+  padding:14px 12px;
+  border:none;
+  border-radius:2px;
+  color:${variablesCSS.black};
+  background:#f2f2f2;
   &::placeholder {
-    color:#1e1e1e;
+    color:${variablesCSS.black};
   }
 `
 
 const Select = styled.select`
-  padding:13px;
-  border-radius:12px;
   width:100%;
   border:none;
-  background:${variablesCSS.gray};
   outline:none;
+  padding:14px 12px 14px 9px;
+  border-radius:2px;
+  color:${variablesCSS.black};
+  background:#f2f2f2;
+  option {
+    color:${variablesCSS.black};
+  }
 `
 
-const BtnWrapper = styled.div`
+const Footer = styled.div`
+  margin-top:20px;
   display:flex;
   justify-content:flex-start;
-  > button:not(:last-child) {
-    margin-right:10px;
-  }
 `
 
 class AddNewArticleForm extends Component {
@@ -118,19 +126,21 @@ class AddNewArticleForm extends Component {
     const { articleToEdit, fetchCategories } = this.props;
 
     await fetchCategories();
-    articleToEdit ? this.setState({ articleToEdit}, () => {
+    articleToEdit && this.setState({ articleToEdit }, () => {
       this.setState({
         title: articleToEdit[0].title,
         category: articleToEdit[0].category,
         content: articleToEdit[0].content
       })
     })
-    : '';
   }
 
   async handleSubmit() {
     const { title, category, file, content } = this.state;
     const data = new FormData();
+
+    if(title.length === 0 || Boolean(category.length) === 0 || file.length === 0 || content.length === 0)
+      return alert('pola nie mogą byc puste!');
 
     this.setState({fetchingStatus: true})
 
@@ -169,9 +179,11 @@ class AddNewArticleForm extends Component {
               <Fragment>
                 <form>
                   <Field>
-                    <Input type='text' placeholder='Tytuł'  maxLength='75' onChange={(e) => this.setState({title: e.target.value})} value={ title }  />
+                    <Label>Tytuł <span style={{color:'#ee324e'}}>*</span></Label>
+                    <Input type='text' placeholder='Podaj tytuł artykułu'  maxLength='75' onChange={(e) => this.setState({title: e.target.value})} value={ title }  />
                   </Field>
                   <Field>
+                  <Label>Kategoria <span style={{color:'#ee324e'}}>*</span></Label>
                   <Select onChange={this.handleSelect} value={category}>
                     <option key={0} value={0} disabled>Wybierz kategorię..</option>
                     {
@@ -182,24 +194,28 @@ class AddNewArticleForm extends Component {
                   </Select>
                   </Field>
                   <Field>
-                    <Textarea type='text' placeholder='Opis' onChange={(e) => this.setState({content: e.target.value})} value={ content } />
+                    <Label>Treść <span style={{color:'#ee324e'}}>*</span></Label>
+                    <Textarea type='text' placeholder='Podaj treść artykułu' onChange={(e) => this.setState({content: e.target.value})} value={ content } />
                   </Field>
                   <Field>
+                    <Label>Zdjęcie <span style={{color:'#ee324e'}}>*</span></Label>
                     <UploadLabel htmlFor='upload'><FaRegFileImage />Wybierz zdjęcie</UploadLabel>
                     <Input type='file' id='upload' onChange={(e) => this.setState({file: e.target.files[0]})} />
                   </Field>
                 </form>
-                <BtnWrapper>
+                <Footer>
                   <Button
                     name='&larr; Cofnij'
                     onClick={() => { this.props.history.goBack() } }
-                    title='Powrót' />
+                    title='Powrót'
+                    margin='0 10px 0 0' />
                   <Button name='Dodaj'
                     blue
                     onClick={() => { this.handleSubmit() } }
                     title='Dodaj artykuł'
-                    isFetching={this.state.fetchingStatus} />
-                </BtnWrapper>
+                    isFetching={this.state.fetchingStatus}
+                    margin='0' />
+                </Footer>
               </Fragment>
           }
           </Wrapper>

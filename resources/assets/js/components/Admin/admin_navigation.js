@@ -51,6 +51,10 @@ const Item = styled.li`
     font-family: 'SSPL';
     text-transform: capitalize;
   }
+  svg {
+    position:relative;
+    top:1px;
+  }
 `
 
 const Text = styled.span`
@@ -109,6 +113,7 @@ const AdminNavigation = () => {
             <MdPerson />
             <Text>Piłkarze</Text>
           </AlignMid>
+          <MdKeyboardArrowRight />
         </Item>
       </LinkTo>
       <LinkTo to="/admin/live">

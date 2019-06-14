@@ -56,7 +56,7 @@ class SurveysCache
 		return cache()->remember($cacheKey, Carbon::now()->addMinutes(30), function() use($id) {
 			$survey_set = DB::table('surveys')->select('idSurvey as idsurvey', 'Topic as topic')->where('idSurvey', $id)->first();
         	$survey_set->answers = array();
-        	$this->getAnswers($survey_set->answers, $survey_set->idsurvey);
+        	SurveySetsController::getAnswers($survey_set->answers, $survey_set->idsurvey);
 			return $survey_set;
 		});
 	}

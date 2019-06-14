@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\UserSurveyAnswersController;
 use Facades\App\CacheData\SurveysCache;
+use App\Surveys;
 
 class SurveySetsController extends Controller
 {
@@ -82,21 +83,28 @@ class SurveySetsController extends Controller
     public function store(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-        if(isset($data['answer']))
+        if(isset($data['answers']) && isset($data['topic']))
         {
-            if(SurveySets::where('idSurvey', $request->idsurvey)->whereIn('Answer', $data['answer'])->exists()) 
+            $surveys = new Surveys;
+            $surveys->Topic = $data['topic'];
+            if(Surveys::where('Topic', '=' , $request->topic)->exists())
                 return response()->json(['status' => false, 'error' => 'wrong data']);
-            foreach ($data['answer'] as $key => $answer)
+            else 
             {
-                $survey_set = new SurveySets;
-                $survey_set->idSurvey = $request->idsurvey;
-                $survey_set->Answer = $answer;
-                if($survey_set->save()) 
-                    { }
-                else
-                    return response()->json(['status' => false, 'error' => 'wrong data']);
+                if($surveys->save())
+                {
+                    $answersArray = [];
+                    foreach ($data['answers'] as $key => $answer) {
+                        $answersArray[] = ['Answer' => $answer, 'idSurvey' => $surveys->id];
+                    }
+                    if(SurveySets::insert($answersArray))
+                    {
+                        return response()->json(['status' => true, 'error' => '']);
+                    }
+                    else
+                        return response()->json(['status' => false, 'error' => 'wrong data']);
+                }
             }
-            return response()->json(['status' => true, 'error' => '']);
         }
         else
             return response()->json(['status' => false, 'error' => 'wrong data']);
@@ -138,14 +146,37 @@ class SurveySetsController extends Controller
             <input type="hidden" name="_method" value="PUT">
         */
         $data = json_decode($request->getContent(), true);
-        if(isset($data['answer']))
+        $msg = '';
+        $survey = SurveysCache::get_survey($id);
+        //print_r($survey->answers);
+        //print_r($data['answers']);
+        //return;
+        if(isset($data['topic']))
         {
-            if(SurveySets::where('idSurveySet', '=' , $id)->update(['Answer' => $data['answer']])) 
-                return response()->json(['status' => true, 'error' => '']);
-            else 
-                return response()->json(['status' => false, 'error' => 'wrong data']);
+            if($data['topic'] !== $survey->topic)
+            {
+                Surveys::where('idSurvey', $id)->update(['Topic' => $data['topic']]);
+                $msg .= 'topic changed';
+            }
         }
-        
+        if(isset($data['answers']))
+        {
+            if(!empty($data['answers']))
+            {
+                foreach ($survey->answers as $key => $answer) {
+                    if(isset($data['answers'][$answer['idsurveyset']]))
+                    {
+                        if($data['answers'][$answer['idsurveyset']] !== $answer['answer'])
+                        {
+                            SurveySets::where('idSurveySet', $answer['idsurveyset'])->update(['Answer' => $data['answers'][$answer['idsurveyset']]]);
+                        }
+                    }
+                }
+                $msg .= empty($msg) ? 'answers changed' : ' answers changed';
+            }
+        }
+        SurveysCache::forgetKey('get_survey.' . $id);
+        return response()->json(['status' => true, 'error' => $msg]);
     }
 
     /**

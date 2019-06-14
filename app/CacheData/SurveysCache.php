@@ -30,7 +30,7 @@ class SurveysCache
 	{
 		$key = 'latest.user.' . $user;
 		$cacheKey = $this->getCacheKey($key);
-		return cache()->remember($cacheKey, Carbon::now()->addHours(12), function() use($user) {
+		return cache()->remember($cacheKey, Carbon::now()->addSeconds(4), function() use($user) {
 			$latestSurvey = $this->latest();
         	$answersId = array();
         	foreach ($latestSurvey->answers as $key => $answer) {

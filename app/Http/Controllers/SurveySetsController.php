@@ -153,9 +153,11 @@ class SurveySetsController extends Controller
         //return;
         if(isset($data['topic']))
         {
+            $topicStatus = false;
             if($data['topic'] !== $survey->topic)
             {
                 Surveys::where('idSurvey', $id)->update(['Topic' => $data['topic']]);
+                $topicStatus = true;
                 $msg .= 'topic changed';
             }
         }
@@ -163,20 +165,28 @@ class SurveySetsController extends Controller
         {
             if(!empty($data['answers']))
             {
+                $answersStatus = false;
                 foreach ($survey->answers as $key => $answer) {
                     if(isset($data['answers'][$answer['idsurveyset']]))
                     {
                         if($data['answers'][$answer['idsurveyset']] !== $answer['answer'])
                         {
+                            $answersStatus = true;
                             SurveySets::where('idSurveySet', $answer['idsurveyset'])->update(['Answer' => $data['answers'][$answer['idsurveyset']]]);
                         }
                     }
                 }
-                $msg .= empty($msg) ? 'answers changed' : ' answers changed';
+                if($answersStatus) {
+                    $msg .= empty($msg) ? 'answers changed' : ' answers changed';
+                }
             }
         }
+        $responseStatus = false;
+        if($topicStatus || $answersStatus) {
+            $responseStatus = true;
+        }
         SurveysCache::forgetKey('get_survey.' . $id);
-        return response()->json(['status' => true, 'error' => $msg]);
+        return response()->json(['status' => $responseStatus, 'error' => $msg]);
     }
 
     /**

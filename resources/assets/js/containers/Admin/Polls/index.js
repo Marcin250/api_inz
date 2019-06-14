@@ -4,6 +4,7 @@ import Header from '../../../components/Admin/admin_header';
 import { Helmet } from 'react-helmet';
 import Title from '../../../components/Admin/admin_pageTitle';
 import Navigation from '../../../components/Admin/admin_navigation';
+import PollContent from '../../../components/Admin/poll_content';
 
 class AdminPanel extends Component {
   render() {
@@ -13,6 +14,7 @@ class AdminPanel extends Component {
           <title>Ankiety - Panel Administracyjny</title>
         </Helmet>
         <Title title='Ankiety' />
+        <PollContent />
       </Fragment>
     )
   }

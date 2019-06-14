@@ -3,26 +3,28 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { GoCommentDiscussion } from 'react-icons/go';
 import createLink from '../../helpers/createLink';
+import variableCSS from '../../css/variables';
 
 const Article = styled.article`
   flex:1 1 160px;
-  max-width:260px;
-  margin-bottom:10px;
+  margin:0;
+  max-width:100%;
+  font-size:.9em;
   transition: all .2s ease-in-out;
   &:hover {
     transform:scale(1.03);
     h3 {
-      color:#ee324e;
+      color:${variableCSS.blue};
     }
   }
-  &:not(:last-child) {
-    padding-right:5px;
+  @media only screen and (min-width: 360px) {
+    margin:2.5px;
   }
-  @media only screen and (max-width: 900px) {
-    max-width:100%;
+  @media only screen and (min-width: 480px) {
+    font-size:1em;
   }
-  @media only screen and (max-width: 480px) {
-    font-size:14px;
+  @media only screen and (min-width: 900px) {
+    max-width:260px;
   }
 `
 
@@ -38,14 +40,23 @@ const Image = styled.img`
 `
 
 const Header = styled.header`
-  padding:14px 0;
+  position:relative;
+  padding:8px 0;
 `
 
 const Category = styled.span`
-  display:block;
-  font-size:.7em;
-  font-family:'AvenirLTB';
+  position:absolute;
+  top:-15px;
+  left:0;
+  z-index:9;
+  display:inline-block;
+  font-size:.65em;
   text-transform:uppercase;
+  padding:3px 6px;
+  font-family:${variableCSS.categoryFont};
+  background:${variableCSS.yellow};
+  color:${variableCSS.yellowText};
+  margin-bottom:2px;
 `
 
 const LinkTo = styled(Link)`
@@ -53,6 +64,8 @@ const LinkTo = styled(Link)`
 `
 
 const Title = styled.h3`
+  font-size:.95em;
+  margin-top:3px;
   font-weight:lighter;
 `
 

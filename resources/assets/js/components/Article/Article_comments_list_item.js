@@ -12,6 +12,7 @@ import AddCommentForm from './article_comments_form';
 import EditCommentForm from './article_comments_edit_form';
 import dateConverter from '../../helpers/dateConverter';
 import ConfimationModal from '../Reusable/modal_confirmation';
+import variableCSS from '../../css/variables';
 import { selectedCommentID, deleteComment, hideComment } from '../../actions';
 
 const ListItem = styled.li`
@@ -19,8 +20,7 @@ const ListItem = styled.li`
   animation:animateComment .3s ease-in;
   flex-flow:row nowrap;
   justify-content:flex-start;
-  padding-top:25px;
-  }
+  margin-top:25px;
   &:not(:last-child) {
     margin-bottom:15px;
   }
@@ -39,7 +39,7 @@ const ListItem = styled.li`
 const Article = styled.article`
   flex:1;
   ul {
-    margin-left:20px;
+    margin-left:-20px;
     @media only screen and (min-width: 640px) {
       margin-left:-20px;
     }
@@ -50,29 +50,46 @@ const Header = styled.header`
   display:flex;
   justify-content:space-between;
   align-items:baseline;
-  flex-flow: row wrap;
+  flex-flow: column wrap;
+  @media (min-width: 640px) {
+    flex-flow: row wrap;
+  }
 `;
 
 const Added = styled.span`
   font-size:.8em;
+  text-align:left;
+  line-height:1.3;
   letter-spacing:.6px;
-  color:#c8c8c8;
+  color:${variableCSS.darkGray};
+  @media (min-width: 640px) {
+    text-align: right;
+  }
 `;
 
 const Content = styled.p`
   white-space:pre-line;
   text-align:justify;
   padding:8px 0;
+  margin-left:-50px;
   font-size:1.05em;
+  margin-top:10px;
+  @media (min-width: 640px) {
+    margin-left:0;
+  }
 `;
 
 const Footer = styled.footer`
   margin-top:6px;
+  margin-left:-50px;
   display:flex;
   flex-flow:row wrap;
   align-items:center;
   justify-content:flex-start;
   margin-bottom:15px;
+  @media (min-width: 640px) {
+    margin-left:0;
+  }
 `;
 
 const ActionName = styled.span`
@@ -89,20 +106,20 @@ const FooterItem = styled.button`
   cursor:pointer;
   padding:3px;
   border:none;
-  color:rgb(169,169,169);
+  color:${variableCSS.darkGray}
   cursor:pointer;
   &:not(:last-child) {
     margin-right:6px;
   }
   &:hover {
-    color:#00529f;
+    color:${variableCSS.blue};
   }
 `
 
 const LinkTo = styled(Link)`
   color:inherit;
   &:hover {
-    color:#00529f;
+    color:${variableCSS.blue};
   }
 `
 
@@ -179,7 +196,7 @@ class SingleComment extends Component {
             {!comment.modify_date
               ? <Added title={comment.create_date}>{dateConverter.toStageDate(comment.create_date)}</Added>
               : (
-                <Added title={`${comment.create_date}, edited at ${comment.modify_date}`}>{dateConverter.toStageDate(comment.create_date)}, edited {dateConverter.toStageDate(comment.modify_date)}</Added>
+                <Added title={`${comment.create_date}, edited at ${comment.modify_date}`}>{dateConverter.toStageDate(comment.create_date)}, <br/>edytowano {dateConverter.toStageDate(comment.modify_date)}</Added>
               )
             }
           </Header>
@@ -227,7 +244,7 @@ class SingleComment extends Component {
                 }
                 {user[0].tier > 2 && user[0].iduser !== comment.user.iduser
                   ? (
-                    <FooterItem title="Zbanuj komentarz" style={{ color: '#ee324e' }} onClick={this.handleHide}>
+                    <FooterItem title="Zbanuj komentarz" style={{ color: variableCSS.crimson }} onClick={this.handleHide}>
                       <IoIosFlag />
                       <ActionName>Zbanuj</ActionName>
                     </FooterItem>
@@ -244,7 +261,7 @@ class SingleComment extends Component {
                 user={user} articleID={articleID}
                 commentID={comment.idcomment}
                 author={comment.user.name}
-                handleForm={() => this.handlePostForm()} />
+                handleForm={this.handlePostForm} />
             : ''}
           {
             comment.comments ? <Comments comments={comment.comments} user={user} articleID={articleID} /> : ''}

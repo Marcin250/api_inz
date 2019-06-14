@@ -81,7 +81,9 @@ class EditCommentForm extends Component {
   }
 
   componentDidMount() {
-    this.setState({content: this.props.content})
+    const { content } = this.props;
+
+    this.setState({ content, charactersUsed: content.length })
   }
 
   handleTextarea(event) {
@@ -124,7 +126,7 @@ class EditCommentForm extends Component {
             <Counter id='counter'>Użyto znaków: {charactersUsed}/500</Counter>
             <ButtonWrapper>
               <Button name='Anuluj' onClick={this.cancelPost} />
-              <Button name='Edytuj wiadomość' colorBlue onClick={this.handlePost} isFetching={fetchingStatus} />
+              <Button name='Edytuj wiadomość' blue onClick={this.handlePost} isFetching={fetchingStatus} />
             </ButtonWrapper>
           </Wrapper>
         </Form>

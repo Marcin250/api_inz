@@ -12,6 +12,7 @@ const Container = styled.section`
 
 const Wrapper = styled.div`
   display:flex;
+  margin-top:10px;
   flex-flow:row wrap;
   justify-content:flex-start;
 `
@@ -22,11 +23,11 @@ class Fixtures extends Component {
       <Container>
         <PageHeader>Rozgrywki</PageHeader>
         <Wrapper>
-          <NavItem name='Liga Hiszpańska' icon={ <FaUsers />} gold />
-          <NavItem name='Liga Mistrzów' icon={ <FaUsers /> }  gold />
-          <NavItem name='Klubowe Mistrzowstwa świata' icon={ <FaUsers /> } gold />
-          <NavItem name='Superpuchar Hiszpanii' icon={ <FaUsers /> } gold />
-          <NavItem name='Superpuchar Europy' icon={ <FaUsers /> }  gold />
+          <NavItem name='Liga Hiszpańska' icon={ <FaUsers />} />
+          <NavItem name='Liga Mistrzów' icon={ <FaUsers /> }  />
+          <NavItem name='Klubowe Mistrzowstwa świata' icon={ <FaUsers /> } />
+          <NavItem name='Superpuchar Hiszpanii' icon={ <FaUsers /> } />
+          <NavItem name='Superpuchar Europy' icon={ <FaUsers /> }  />
         </Wrapper>
       </Container>
     )

@@ -1,6 +1,13 @@
 import React from 'react';
 import RelatedListItem from './article_related_list_item';
-import Wrapper from '../Reusable/wrapper';
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+  display:flex;
+  flex-flow:row wrap;
+  justify-content:space-between;
+  margin: 15px 2.5px;
+`
 
 const RelatedList = props => {
   const {neighbours} = props;

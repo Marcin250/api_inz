@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Button from '../Reusable/button';
+import variablesCSS from '../../css/variables';
 
 const Form = styled.form`
   flex:4 1 430px;
@@ -22,9 +23,10 @@ const Form = styled.form`
     padding:10px;
     border-radius:6px;
     outline:none;
-    border:2px solid #ededed;
+    border:2px solid ${variablesCSS.gray};
+    transition: border .3s;
     &:focus {
-      border:2px solid #00529f;
+      border:2px solid ${variablesCSS.yellow};
     }
   }
   textarea {
@@ -76,7 +78,7 @@ class ContactForm extends Component {
         <Button
           name='Wyślij'
           onClick={this.handleFormSubmit}
-          colorBlue />
+          warning />
       </Form>
     )
   }

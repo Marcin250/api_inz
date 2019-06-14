@@ -3,12 +3,13 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import dateConverter from '../../helpers/dateConverter';
 import Share from './article_share';
+import variableCSS from '../../css/variables';
 
 const Wrapper = styled.section`
   flex:1;
-  padding-top:5px;
-  margin-bottom:10px;
-  @media only screen and (max-width: 480px) {
+  margin-top:7px;
+  margin-bottom:30px;
+  @media only screen and (max-width: 479px) {
     display:none;
   }
 `
@@ -22,24 +23,21 @@ const Sticky = styled.div`
 
 const PublishedBy = styled.span`
   display:block;
-  margin-top:15px;
+  margin-top:10px;
 `
 
 const LinkTo = styled(Link)`
-  color:#00529f;
   line-height:1.1;
   display:inline-block;
-  text-transform: uppercase;
-  font-family:'SSPB';
-  border-bottom:1px solid #e0e0e0;
-  padding:0 0 12px 20px;
-  &:hover {
-    text-decoration:underline;
-  }
+  font-size:.8em;
+  padding:6px 10px;
+  font-family: ${variableCSS.categoryFont};
+  background:${variableCSS.yellow};
+  color:${variableCSS.yellowText};
 `
 
 const LinkToUser = styled(Link)`
-  color:#00529f;
+  color:${variableCSS.blue};
   display:inline;
   text-transform: lowercase;
 `
@@ -50,8 +48,8 @@ const Author = props => {
   return (
     <Wrapper>
       <Sticky>
-        <LinkTo to={`/app/news/${category}`}>{category}</LinkTo>
-        <PublishedBy>posted by <LinkToUser to={`/app/user/${user.iduser}`} title={`Profil użytkownika ${user.name}`}>{user.name}</LinkToUser>,<br/>{dateConverter.toStageDate(create_date)}</PublishedBy>
+        <LinkTo to={`/app/news/${category}`} title={`Pokaż artykuły z kategorii: ${category}`}>{category}</LinkTo>
+        <PublishedBy>dodane przez <LinkToUser to={`/app/user/${user.iduser}`} title={`Profil użytkownika ${user.name}`}>{user.name}</LinkToUser>,<br/>{dateConverter.toStageDate(create_date)}</PublishedBy>
         <Share url={props.url} />
       </Sticky>
     </Wrapper>

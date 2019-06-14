@@ -2,31 +2,27 @@ import React from 'react';
 import styled from 'styled-components';
 
 const ImageContainer = styled.figure`
-  display:none;
   justify-content:center;
-  min-width:55px;
-  min-height:55px;
-  max-width:55px;
-  max-height:55px;
+  min-width:42px;
+  min-height:42px;
+  max-width:42px;
+  max-height:42px;
   margin-right:10px;
   overflow:hidden;
   align-self:flex-start;
   border-radius:100%;
-  @media (min-width: 640px) {
-    display:flex;
-  }
 `
 
 const Image = styled.img`
-  height:55px;
+  height:42px;
 `
 
 const User = props => {
-  const {image} = props.user;
+  const {image, name} = props.user;
 
   return (
     <ImageContainer>
-      <Image src={image} title='' alt='' />
+      <Image src={image} title={`avatar uzytkownika ${name}`} alt={`avatar uzytkownika ${name}`} />
     </ImageContainer>
   )
 }

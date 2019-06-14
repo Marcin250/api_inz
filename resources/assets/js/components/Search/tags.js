@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import TagsList from './tags_list';
 import MiniLoader from '../Reusable/mini_loader';
-import Title from '../Schedule/schedule_title';
+import PageHeader from '../Reusable/PageHeader';
 
 const Container = styled.section`
   width:100%;
@@ -23,7 +23,7 @@ const Tags = props => {
 
   return (
     <Container>
-      <Title>Tagi</Title>
+      <PageHeader>Tagi</PageHeader>
       {
         !status ?
         articles.length ?

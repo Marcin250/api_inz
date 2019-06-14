@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 const Text = styled.p`
   line-height:1.5;
+  margin: 0 5px;
   font-size:1em;
   white-space: pre-line;
   text-align: justify;

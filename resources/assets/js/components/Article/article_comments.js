@@ -4,24 +4,33 @@ import Wrapper from '../Reusable/wrapper';
 import Form from './article_comments_form';
 import CommentsList from './article_comments_list';
 import MiniLoader from '../Reusable/mini_loader';
+import SectionHeader from '../Reusable/section_header';
+import Button from '../Reusable/button';
 import { connect } from 'react-redux';
 import {fetchComments, setCommentStatus} from '../../actions/'
-
-const Title = styled.h3`
-  font-size:1.4em;
-  font-weight:lighter;
-  margin-top:50px;
-`
+import variablesCSS from '../../css/variables';
 
 const Container = styled.div`
   width:100%;
-  @media (min-width: 900px) {
-
+  margin:20px 2.5px 0 2.5px;
+  @media only screen and (min-width: 900px) {
+    margin-left:10px;
+    margin-right:25px;
   }
 `
 
+const HeaderWrapper = styled.div`
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+`
+
+const CommentsWrapper = styled.section`
+  margin-top:20px;
+`
+
 const Information = styled.p`
-  margin-top:25px;
+  margin:15px 0;
 `
 
 class CommentSection extends Component {
@@ -30,6 +39,7 @@ class CommentSection extends Component {
 
     this.state = {
       fetchingStatus: false,
+      commentRefreshStatus: false,
       comments: {
         data:[]
       },
@@ -62,13 +72,27 @@ class CommentSection extends Component {
 }
 
   render() {
-    const { articleID, user } = this.props,
-          { fetchingStatus, comments } = this.state;
+    const { articleID, user, fetchComments, setCommentStatus } = this.props,
+          { fetchingStatus, comments, commentRefreshStatus } = this.state;
 
     return (
       <Container>
-        <Title>Komentarze</Title>
-        <Fragment>
+        <HeaderWrapper>
+          <SectionHeader>Komentarze</SectionHeader>
+          <Button
+            title='Odśwież listę komentarzy'
+            name='Odśwież'
+            minWidth
+            isFetching={commentRefreshStatus}
+            onClick={ async () => {
+              this.setState({commentRefreshStatus: true})
+              await fetchComments(articleID);
+              setCommentStatus(true);
+              this.setState({commentRefreshStatus: false})
+            }}
+          />
+        </HeaderWrapper>
+        <CommentsWrapper>
         {
           fetchingStatus
           ? <MiniLoader />
@@ -89,7 +113,7 @@ class CommentSection extends Component {
             </Fragment>
           : <Information>Aby napisać komentarz musisz się zalogować!</Information>
         }
-        </Fragment>
+        </CommentsWrapper>
       </Container>
     )
   }

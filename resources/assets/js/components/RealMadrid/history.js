@@ -10,6 +10,7 @@ const Container = styled.section`
 `
 
 const Wrapper = styled.div`
+  margin-top:10px;
   display:flex;
   flex-flow:row wrap;
   justify-content:flex-start;
@@ -21,12 +22,12 @@ class History extends Component {
       <Container>
         <PageHeader>Historia</PageHeader>
         <Wrapper>
-          <NavItem name='Klub' icon={ <FaUsers />} red />
-          <NavItem name='Legendy' icon={ <FaUsers /> }  red />
-          <NavItem name='Prezesi' icon={ <FaUsers /> } red />
-          <NavItem name='Trofea' icon={ <FaUsers /> } red />
-          <NavItem name='Hymn' icon={ <FaUsers /> } red />
-          <NavItem name='Santiago Bernabeu' icon={ <FaUsers /> }  red />
+          <NavItem name='Klub' icon={ <FaUsers />} />
+          <NavItem name='Legendy' icon={ <FaUsers /> }  />
+          <NavItem name='Prezesi' icon={ <FaUsers /> } />
+          <NavItem name='Trofea' icon={ <FaUsers /> } />
+          <NavItem name='Hymn' icon={ <FaUsers /> } />
+          <NavItem name='Santiago Bernabeu' icon={ <FaUsers /> }  />
         </Wrapper>
       </Container>
     )

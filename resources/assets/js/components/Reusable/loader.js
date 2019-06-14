@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import variablesCSS from '../../css/variables';
 
 const Wrapper = styled.div`
   background:#fff;
@@ -13,17 +14,23 @@ const Wrapper = styled.div`
   display:flex;
   align-items:center;
   justify-content:center;
+  p {
+    margin-top:8px;
+    font-size:.9em;
+    letter-spacing:.5px;
+    color:${variablesCSS.darkGray}
+  }
 `
 
 const Spinner = styled.div`
   margin-right:8px;
-  border: 12px solid #f3f3f3;
+  border: 4px solid ${variablesCSS.gray};
   border-radius: 50%;
-  border-top: 12px solid #3f3f3f;
+  border-top: 4px solid ${variablesCSS.blue};
   width: 100px;
   height: 100px;
-  -webkit-animation: spin 2s linear infinite; /* Safari */
-  animation: spin 2s linear infinite;
+  -webkit-animation: spin 1s linear infinite; /* Safari */
+  animation: spin 1s linear infinite;
 
   @keyframes spin {
       0% { transform: rotate(0deg); }
@@ -53,6 +60,7 @@ const Loader = () => {
   return (
     <Wrapper>
       <Spinner></Spinner>
+      <p>Ładowanie strony</p>
     </Wrapper>
   )
 }

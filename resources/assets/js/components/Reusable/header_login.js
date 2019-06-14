@@ -173,6 +173,7 @@ const Checkbox = styled.input`
 
 const UserImageWrapper = styled.figure`
   height:24px;
+  width:24px;
   border-radius:50%;
   display:flex;
   align-items:center;

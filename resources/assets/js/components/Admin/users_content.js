@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Title from './admin_content_title';
-import UserFilters from './admin_filters';
+import Filters from './admin_filters';
 import UsersTable from './users_table';
 
 const Container = styled.section`
@@ -27,7 +27,7 @@ const UsersContent = props => {
     <Container>
       <Title>Użytkownicy</Title>
       <Wrapper>
-        <UserFilters />
+        <Filters />
       </Wrapper>
       <Wrapper>
         <UsersTable />

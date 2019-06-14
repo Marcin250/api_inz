@@ -5,38 +5,38 @@ import ActionButton from './article_action';
 import { connect } from 'react-redux';
 import { searchAdminArticles } from '../../actions/';
 import { Link } from 'react-router-dom';
-import { MdEdit, MdBuild } from 'react-icons/md';
+import { MdBlock, MdRemoveCircleOutline, MdBuild } from 'react-icons/md';
 import { API } from '../../helpers/api';
+import variablesCSS from '../../css/variables';
 
 const Table = styled.table`
   width:100%;
   text-align:left;
-  table-layout: fixed;
   border-collapse: collapse;
 `
 
 const Title = styled.th`
-  padding:12px 5px;
-  border-top-left-radius:3px;
-  border-top-right-radius:3px;
-  border:1px solid #F3F4F8;
-  font-family:'SSPB';
+  text-transform: uppercase;
+  letter-spacing:.5px;
+  padding:16px 10px;
+  font-family:${variablesCSS.categoryFont};
+  background:${variablesCSS.gray};
+  font-size:.75em;
 `
 
 const Field = styled.td`
-  padding:14px 5px;
+  padding:10px;
+  font-size:.95em;
   word-break: break-word;
 `
 
 const Row = styled.tr`
+  &:not(:last-child) {
+    border-bottom:1px solid ${variablesCSS.gray};
+  }
   ${Field} {
     &:last-child {
       max-width:230px;
-    }
-  }
-  &:nth-child(odd) {
-    ${Field} {
-      background:#F3F4F8;
     }
   }
 `
@@ -89,7 +89,7 @@ class UsersTable extends Component {
                 item => {
                   return (
                       <Row key={item.iduser}>
-                        <Field>{item.create_date}</Field>
+                        <Field>{new Date(item.create_date).toLocaleString()}</Field>
                         <Field>{item.status}</Field>
                         <Field>{item.name}</Field>
                         <Field>{item.email}</Field>
@@ -98,12 +98,12 @@ class UsersTable extends Component {
                         {
                           item.status === 'aktywny' ?
                           (
-                            <ActionButton name='Zablokuj' icon={<MdEdit />} />
+                            <ActionButton title='Zablokuj użytkownika' icon={<MdBlock />} />
                           ) : (
-                            <ActionButton name='Odblokuj' icon={<MdEdit />} />
+                            <ActionButton title='Odblokuj użytkownika' icon={<MdRemoveCircleOutline />} />
                           )
                         }
-                          <ActionButton name='Nadaj prawa' icon={<MdBuild />} />
+                          <ActionButton title='Zmień prawa użytkownika' icon={<MdBuild />} />
                         </Field>
                       </Row>
                       );

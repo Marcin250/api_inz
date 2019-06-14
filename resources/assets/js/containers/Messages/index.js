@@ -8,12 +8,8 @@ import { Helmet } from 'react-helmet';
 const Main = styled.main`
   max-width: 1300px;
   color:#1e1e1e;
-  padding:0 5px;
+  padding:0 15px;
   margin:40px auto;
-  padding-right:45px;
-  @media (min-width: 640px) {
-    padding-right:0;
-  }
 `
 
 const Info = styled.p`

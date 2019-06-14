@@ -18,9 +18,16 @@ const User = styled.section`
   display:flex;
 `
 
+const ImageWrapper = styled.figure`
+  overflow:hidden;
+  width:30px;
+  height:30px;
+  border-radius: 50%;
+`
+
 const UserImage = styled.img`
   display:inline-block;
-  height:31px;
+  height:30px;
 `;
 
 const UserInfo = styled.div`
@@ -47,7 +54,9 @@ const AdminHeader = (props) => {
     <Wrapper>
     { user.length
       ? <User>
-          <UserImage src={user[0].image} />
+          <ImageWrapper>
+            <UserImage src={user[0].image} />
+          </ImageWrapper>
           <UserInfo>
             <Text>{user[0].name}</Text>
             <Text>{user[0].email}</Text>

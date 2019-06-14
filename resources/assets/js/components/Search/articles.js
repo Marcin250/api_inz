@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import Title from '../Schedule/schedule_title';
+import PageHeader from '../Reusable/PageHeader';
 import ArticlesList from './articles_list';
 import MiniLoader from '../Reusable/mini_loader';
 
@@ -24,7 +24,7 @@ class Articles extends Component {
 
     return (
       <Container>
-        <Title>Wyniki wyszukiwania</Title>
+        <PageHeader>Wyniki wyszukiwania</PageHeader>
         {
           !status ?
           articles.length ?

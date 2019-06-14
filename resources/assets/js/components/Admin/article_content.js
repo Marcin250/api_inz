@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Title from './admin_content_title';
-import ArticleFilters from './admin_filters';
+import Filters from './admin_filters';
 import ArticleTable from './article_table';
 import Button from '../Reusable/button';
 
@@ -30,11 +30,11 @@ const ArticleContent = props => {
       <Title>Twoje artykuły</Title>
       <Wrapper>
         <Link to='/admin/articles/add'>
-          <Button name='Dodaj artykuł' warning />
+          <Button name='Dodaj artykuł' blue margin='0' />
         </Link>
       </Wrapper>
       <Wrapper>
-        <ArticleFilters />
+        <Filters />
       </Wrapper>
       <Wrapper>
         <ArticleTable />

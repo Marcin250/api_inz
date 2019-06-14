@@ -5,6 +5,10 @@ import SingleComment from './article_comments_list_item';
 const List = styled.ul`
   list-style-type: none;
   line-height:1.5;
+  font-size:14px;
+  @media only screen and (min-width: 480px) {
+    font-size:1em;
+  }
 `
 
 const Comments = props => {

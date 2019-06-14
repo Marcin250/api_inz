@@ -20,16 +20,12 @@ const Main = styled.main`
 `
 
 const Container = styled.section`
-  margin-left: auto;
-  margin-right:auto;
+  margin: 40px auto 0 auto;
   max-width:1300px;
   display:flex;
   flex-flow: row wrap;
   justify-content: space-between;
   padding:0 15px;
-  @media (min-width: 480px) {
-    margin-top:40px;
-  }
 `
 
 class SingleArticle extends Component {
@@ -66,7 +62,7 @@ class SingleArticle extends Component {
 
     const currentID = Number(this.props.match.params.id);
     await this.props.fetchArticle(currentID);
-    const latest = await API.get('articles_latest/10'),
+    const latest = await API.get(`articles_latest/10`),
           neighbours = await API.get(`articles_show_neighbours/${currentID}`);
 
     this.setState({article: this.props.article, latest, neighbours, loadingStatus: false });

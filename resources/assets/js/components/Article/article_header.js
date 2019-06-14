@@ -5,19 +5,23 @@ import { IoIosEye, IoIosHeart } from 'react-icons/io';
 import {incLikesCount, decLikesCount} from '../../actions/';
 import { connect } from 'react-redux';
 import Notification from '../Reusable/modal_notification';
+import variablesCSS from '../../css/variables';
 
 const Header = styled.header`
   background:white;
   color:#1e1e1e;
-  margin-bottom:40px;
+  margin: 0 5px 40px 5px;
 `
 
 const Title = styled.h2`
   display:block;
-  font-family:'AvenirLTB';
-  font-size:1.7em;
+  font-family:'RSBold';
+  font-size:1.65em;
+  @media (min-width: 480px) {
+    font-size:2em;
+  }
   @media (min-width: 640px) {
-    font-size:2.3em;
+    font-size:2.4em;
   }
 `
 
@@ -33,12 +37,12 @@ const Item = styled.div`
   cursor:default;
   cursor: pointer;
   align-items:center;
-  color:#c8c8c8;
+  color:${variablesCSS.gray};
   &:not(:last-child) {
     margin-right:8px;
   }
   svg {
-    color:#c8c8c8;
+    color:${variablesCSS.gray};
   }
 `
 

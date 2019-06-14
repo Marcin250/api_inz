@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import MiniLoader from './mini_loader';
+import variableCSS from '../../css/variables';
 
 const Btn = styled.button`
   border-radius:6px;
@@ -8,11 +9,11 @@ const Btn = styled.button`
   cursor:pointer;
   padding:10px 20px;
   outline:none;
-  margin: 0 6px;
+  margin: ${props => props.margin ? props.margin : '0 6px'};
   min-width:${props => props.minWidth ? '105px' : 'initial'};
   width: ${props => props.fullWidth ? '100%' : 'initial'};
-  color:${props => props.warning ? '#ffffff' : 'rgb(119, 119, 119)'};
-  background:${props => props.warning ? '#ee324e' : 'default'};
+  color:${props => props.warning || props.blue ? '#ffffff' : 'rgb(119, 119, 119)'};
+  background:${props => props.warning ? `${variableCSS.yellow}` : props.blue ? `${variableCSS.blue}` : 'default'};
 `
 
 const Spinner = styled.div`
@@ -24,8 +25,8 @@ const Spinner = styled.div`
     background-color: #fff;
     border-radius: 100%;
     display: inline-block;
-    -webkit-animation: spin 1.4s infinite ease-in-out both;
-    animation: spin 1.4s infinite ease-in-out both;
+    -webkit-animation: bounce 1.4s infinite ease-in-out both;
+    animation: bounce 1.4s infinite ease-in-out both;
     &:nth-child(1) {
       -webkit-animation-delay: -0.32s;
       animation-delay: -0.32s;
@@ -37,7 +38,7 @@ const Spinner = styled.div`
     }
   }
 
-  @keyframes spin {
+  @keyframes bounce {
     0%, 80%, 100% {
       -webkit-transform: scale(0);
       transform: scale(0);
@@ -49,7 +50,7 @@ const Spinner = styled.div`
 `
 
 const Button = props => {
-  const { isFetching, warning } = props;
+  const { isFetching } = props;
 
   return (
       isFetching ?
@@ -57,7 +58,9 @@ const Button = props => {
         <Btn
           warning={props.warning}
           minWidth={props.minWidth}
-          fullWidth={props.fullWidth}>
+          fullWidth={props.fullWidth}
+          blue={props.blue}
+          margin={props.margin}>
           <Spinner>
             <div className="bounce1"></div>
             <div className="bounce2"></div>
@@ -68,10 +71,11 @@ const Button = props => {
         <Btn
           fullWidth={props.fullWidth}
           type='button'
-          colorBlue={props.colorBlue}
           onClick={props.onClick}
+          blue={props.blue}
           warning={props.warning}
           minWidth={props.minWidth}
+          margin={props.margin}
         >{props.name}</Btn>
       )
   )

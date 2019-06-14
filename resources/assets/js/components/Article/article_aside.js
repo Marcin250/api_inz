@@ -3,19 +3,14 @@ import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 import AsideList from './article_aside_list';
 import Button from '../Reusable/button';
+import SectionHeader from '../Reusable/section_header';
 
 const Wrapper = styled.aside`
   width:27%;
-  padding-left:5px;
   margin-bottom:50px;
   @media only screen and (max-width: 900px) {
     display:none;
   }
-`;
-
-const Header = styled.h3`
-  font-size:1.4em;
-  font-weight:lighter;
 `;
 
 const Centered = styled.div`
@@ -25,13 +20,13 @@ const Centered = styled.div`
 
 const Aside = props => (
   <Wrapper>
-    <Header>Ostatnio dodane</Header>
+    <SectionHeader margin='0 0 0 8px'>Ostatnio dodane</SectionHeader>
     <AsideList latest={props.latest} />
     <Centered>
       <Button
-        name="Zobacz więcej"
+        name="Pokaż więcej"
         fullWidth
-        colorBlue
+        blue
         onClick={ () => { props.history.push('/app/news')} }
       />
     </Centered>

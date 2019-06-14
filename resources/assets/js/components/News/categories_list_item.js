@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import variablesCSS from '../../css/variables';
 
 
 const Wrapper = styled.span`
@@ -9,11 +10,10 @@ const Wrapper = styled.span`
   cursor:pointer;
   line-height:1;
   padding:8px;
-  font-size:.95em;
-  background:#00529f;
+  background:${variablesCSS.blue};
   color:#fff;
   &:hover {
-    color:#FEBE10;
+    color:${variablesCSS.yellow};
   }
 `
 

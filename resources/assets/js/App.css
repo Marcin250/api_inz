@@ -48,6 +48,43 @@
   src: url('/fonts/Avenir/AvenirNextLTPro-Bold.ttf') format('truetype');
 }
 
+@font-face {
+  font-family: 'PantonBlack';
+  src: url('/fonts/Panton/Panton-BlackCaps.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'PantonLight';
+  src: url('/fonts/Panton/Panton-LightCaps.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'TruenoSBlack';
+  src: url('/fonts/trueno/TruenoSBd.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'RSBold';
+  src: url('/fonts/rajdhani/Rajdhani-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'RSMedium';
+  src: url('/fonts/rajdhani/Rajdhani-Medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'RSLight';
+  src: url('/fonts/rajdhani/Rajdhani-Light.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('/fonts/lato/Lato-Regular.ttf') format('truetype');
+}
+
+
+
 * {
   margin: 0;
   padding:0;
@@ -55,7 +92,7 @@
 }
 
 a {
-  color:white;
+  color:#00529f;
   text-decoration:none;
   display:inline-block;
   line-height:1.5;

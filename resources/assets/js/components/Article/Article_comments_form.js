@@ -9,15 +9,22 @@ import AddCommentButtonMobile from './article_comment_add_mobile';
 import AddCommentModalMobile from './article_comment_add_modal';
 import ModalNotification from '../Reusable/modal_notification';
 import {API} from '../../helpers/api';
+import variableCSS from '../../css/variables';
 
 import { addComment, setCommentStatus } from '../../actions/';
 
-window.axios = axios;
+const Wrapper = styled.section`
+  display:none;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  @media only screen and (min-width: 640px) {
+    display:flex;
+  }
+`
 
 const Form = styled.form`
   flex:8;
   width:100%;
-  margin-top:15px;
 `
 
 const TextField = styled.textarea`
@@ -32,10 +39,10 @@ const TextField = styled.textarea`
   padding:10px;
   margin-bottom:10px;
   outline:none;
-  transition: all .25s;
+  transition: border .25s;
   &:focus {
     transition: all .25s;
-    border:2px solid #00529f;
+    border:2px solid ${variableCSS.blue};
     border-radius: 5px;
   }
 `
@@ -47,7 +54,6 @@ const UserImageContainer = styled.figure`
   min-height:55px;
   max-width:55px;
   max-height:55px;
-  margin-top:10px;
   margin-right:10px;
   overflow:hidden;
   align-self:flex-start;
@@ -69,17 +75,9 @@ const Counter = styled.span`
   font-size:.85em;
 `
 
-const Wrapper = styled.section`
-  display:none;
-  flex-flow: row wrap;
-  justify-content: space-between;
-  @media only screen and (min-width: 640px) {
-    display:flex;
-  }
-`
-
 const Warning = styled.span`
   color:#ee324e;
+  font-weight:bold;
 `
 
 class AddCommentForm extends Component {
@@ -96,6 +94,7 @@ class AddCommentForm extends Component {
       modalType: ''
     };
 
+    this.commentContent = React.createRef();
     this.handleTextarea = this.handleTextarea.bind(this);
     this.handlePost = this.handlePost.bind(this);
   }
@@ -112,18 +111,19 @@ class AddCommentForm extends Component {
     const charactersUsed = event.target.value.length;
 
     this.setState({content: event.target.value});
-    if(charactersUsed < 501)
+    if(charactersUsed <= 500)
       return this.setState({charactersUsed: event.target.value.length});
   }
 
   async handlePost(e) {
     e.preventDefault();
+
     const { charactersUsed, content } = this.state;
     const { articleID, commentID, handleForm } = this.props;
     const idsubreference = !commentID ? 0 : commentID;
     const idreference = articleID;
 
-    if (charactersUsed <= 0) return true;
+    if (charactersUsed <= 0) return this.commentContent.current.style.borderColor = `${variableCSS.crimson}`;
     this.setState({ fetchingStatus: true });
 
     await this.props.addComment({content, idsubreference, idreference});
@@ -135,13 +135,14 @@ class AddCommentForm extends Component {
       modalText: 'Komentarz został dodany.',
       modalType: 'success'
     });
+
+    this.commentContent.current.style.cssText = '';
     handleForm && handleForm();
   }
 
   render() {
     const { charactersUsed, fetchingStatus, openCommentModal } = this.state,
           { articleID, commentID, user, comments, isEditing, article, showAnswerForm, handleForm, author } = this.props;
-
 
     return (
       <Fragment>
@@ -150,19 +151,24 @@ class AddCommentForm extends Component {
             <UserImage  src={user[0].image} title='' alt='' />
           </UserImageContainer>
           <Form>
-            <TextField value={this.state.content} onChange={this.handleTextarea} maxLength='500'></TextField>
+            <TextField
+              value={this.state.content}
+              onChange={this.handleTextarea}
+              maxLength='500'
+              ref={this.commentContent}></TextField>
             <Wrapper>
               {
                 charactersUsed == 500
-                ? <Counter><Warning>Użyto znaków: {charactersUsed}/500 - osiągnięto maksymalną ilość znaków!</Warning></Counter>
+                ? <Counter><Warning>Użyto znaków: {charactersUsed}/500</Warning></Counter>
                 : <Counter>Użyto znaków: {charactersUsed}/500</Counter>
               }
               <Wrapper style={{alignSelf: 'flex-end', alignItems:'center'}}>
                 <Button
                   name='Dodaj post'
-                  colorBlue onClick={this.handlePost}
+                  colorBlue
+                  onClick={this.handlePost}
                   isFetching={fetchingStatus}
-                  warning
+                  blue
                   minWidth
                 />
               </Wrapper>

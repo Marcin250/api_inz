@@ -23,23 +23,31 @@ const Section = styled.section`
 `
 
 class ArticleList extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      fetching: true
+    }
+  }
   async componentDidMount() {
     const { selectedCategoriesByUser } = this.props.article;
     const categoriesID = this.props.article.selectedCategoriesByUser.map(({id}) => id);
     await this.props.fetchNews(categoriesID);
+    this.setState({ fetching: false });
   }
   render() {
     const { newsByCategory } = this.props.article;
+    const { fetching } = this.state;
 
     return (
       <Section>
         {
-          newsByCategory.length ?
-          (
-            newsByCategory.map(item => <Article key={ item.idarticle } article={item} />)
-          ) : (
-            <MiniLoader />
-          )
+          !fetching
+          ? newsByCategory.length
+          ? newsByCategory.map(item => <Article key={ item.idarticle } article={item} />)
+          : 'Brak artykułów dla podanej kategorii'
+          : <MiniLoader />
         }
       </Section>
     )

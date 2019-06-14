@@ -4,6 +4,7 @@ import Header from '../../../components/Admin/admin_header';
 import { Helmet } from 'react-helmet';
 import Title from '../../../components/Admin/admin_pageTitle';
 import Navigation from '../../../components/Admin/admin_navigation';
+import PlayerContent from '../../../components/Admin/players_content';
 
 class AdminPlayers extends Component {
   render() {
@@ -13,6 +14,7 @@ class AdminPlayers extends Component {
           <title>Zawodnicy - Panel Administracyjny</title>
         </Helmet>
         <Title title='Zawodnicy' />
+        <PlayerContent />
       </Fragment>
     )
   }

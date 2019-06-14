@@ -9,14 +9,13 @@ import Logo from './logo';
 
 const Hamburger = styled.label`
   position:relative;
-  border:none;
   cursor: pointer;
   background:#fff;
   right:0;
+  width:40px;
+  height:50px;
   outline:none;
-  padding:17px 20px;
-  border:1px solid #ededed;
-  border-bottom:3px solid #ededed;
+  display:block;
   &:after {
     content:'☰';
     color:#00529f;
@@ -39,7 +38,7 @@ const NavWrapper = styled.div`
 const MobileNav = styled.nav`
   z-index:998;
   width:42px;
-  top:109px;
+  top:112px;
   background:#fff;
   height:calc(100% - 53px);
   position:fixed;

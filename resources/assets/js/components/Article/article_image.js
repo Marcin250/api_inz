@@ -5,6 +5,7 @@ const ImageWrapper = styled.figure`
   overflow:hidden;
   height:250px;
   display:flex;
+  background:#1e1e1e;
   justify-content:center;
   flex-flow:row wrap;
   @media (min-width: 480px) {
@@ -15,7 +16,8 @@ const ImageWrapper = styled.figure`
 `
 
 const Image = styled.img`
-  height:250px;
+  max-width:1300px;
+  height:275px;
   @media (min-width: 480px) {
     width:100%;
     height:100%;

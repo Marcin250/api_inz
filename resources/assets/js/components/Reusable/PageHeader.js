@@ -5,7 +5,7 @@ const Header = styled.div`
   padding:15px 0;
   position:sticky;
   z-index:20;
-  top:96px;
+  top:109px;
   background:#fff;
   display:flex;
   flex-flow:row nowrap;
@@ -18,9 +18,8 @@ const Header = styled.div`
 `
 
 const Title = styled.h3`
-  font-family:'AvenirLTR';
-  font-size:1.25em;
-  font-weight:lighter;
+  font-family:'RSBold';
+  font-size:1.4em;
 `
 
 const PageHeader = props => <Header><Title>{ props.children }</Title></Header>

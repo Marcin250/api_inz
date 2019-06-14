@@ -6,6 +6,7 @@ import Content from './article_content';
 import CommentSection from './article_comments';
 import Related from './article_related';
 import ArticleHeader from './article_header';
+import ArticleShare from './article_share';
 import { connect } from 'react-redux';
 
 const ArticleWrapper = styled.article`
@@ -13,12 +14,6 @@ const ArticleWrapper = styled.article`
   flex-flow:column wrap;
   background:white;
   flex: 3;
-  @media (min-width: 900px) {
-    padding-right:25px;
-  }
-  section:last-child section {
-    padding:0;
-  }
 `;
 
 const Section = styled.section`
@@ -29,10 +24,15 @@ const Section = styled.section`
 
 const Wrapper = styled.section`
   flex:6;
-  margin-top:20px;
   background:white;
   @media (min-width: 480px) {
-    padding-left:25px;
+    padding-left:20px;
+    footer {
+      display:none;
+    }
+  }
+  @media (min-width: 900px) {
+    padding:0 20px;
     margin-top:0;
   }
 `
@@ -47,6 +47,7 @@ const Article = props => {
         <Wrapper>
           <ArticleHeader article = {article} />
           <Content article = {article} />
+          <ArticleShare />
           <Related neighbours = {neighbours} />
         </Wrapper>
       </Section>

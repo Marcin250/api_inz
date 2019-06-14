@@ -1,27 +1,25 @@
 import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
 import Title from './admin_content_title';
+import MiniLoader from '../Reusable/mini_loader';
 import Button from '../Reusable/button';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { fetchCategories } from '../../actions/'
+import { FaRegFileImage } from "react-icons/fa";
 import { withRouter } from 'react-router-dom';
+import variablesCSS from '../../css/variables';
 
 const Container = styled.section`
   margin-left:1px;
   margin:20px;
   margin-top:5px;
   align-items:center;
-  svg {
-    color:#c6c6c6;
-    font-size:1.25em;
-    font-family: 'SSPL';
-  }
 `
 
 const Wrapper = styled.section`
   background:#fff;
-  padding:15px 20px;
+  padding:25px 35px;
   margin:1px 20px;
 `
 
@@ -33,47 +31,78 @@ const Input = styled.input`
   display:block;
   outline:none;
   width:100%;
-  padding:12px;
-  border-radius:10px;
   border:none;
-  border:2px solid #e5e5e5;
-  &:focus {
-    border: 2px solid #00529f;
-  }
+  height:45px;
+  padding:14px 12px;
+  border-radius:2px;
+  color:${variablesCSS.black};
+  background:#f2f2f2;
   &[type='file'] {
+    display:none;
     border:none;
+  }
+  &::placeholder {
+    color:${variablesCSS.black};
+  }
+`
+
+const Label = styled.span`
+  display:block;
+  margin-bottom:5px;
+  font-size:.9em;
+  letter-spacing:.5px;
+`
+
+const UploadLabel = styled.label`
+  display:flex;
+  cursor: pointer;
+  height:45px;
+  letter-spacing:.35px;
+  font-size:.85em;
+  padding:15px 12px;
+  border-radius:2px;
+  color:${variablesCSS.black};
+  background:#f2f2f2;
+  svg {
+    font-size:1.2em;
+    margin-right:4px;
+    color:inherit;
   }
 `
 
 const Textarea = styled.textarea`
   width:100%;
   resize: vertical;
-  border-radius:10px;
-  padding:12px;
-  min-height:100px;
-  max-height:250px;
-  border:none;
+  min-height:175px;
+  max-height:400px;
   outline:none;
-  border:2px solid #e5e5e5;
-  &:focus {
-    border: 2px solid #00529f;
+  padding:14px 12px;
+  border:none;
+  border-radius:2px;
+  color:${variablesCSS.black};
+  background:#f2f2f2;
+  &::placeholder {
+    color:${variablesCSS.black};
   }
 `
 
 const Select = styled.select`
-  padding:12px;
-  border-radius:12px;
   width:100%;
+  border:none;
   outline:none;
-  border:2px solid #e5e5e5;
+  padding:14px 12px 14px 9px;
+  border-radius:2px;
+  color:${variablesCSS.black};
+  background:#f2f2f2;
+  option {
+    color:${variablesCSS.black};
+  }
 `
 
-const BtnWrapper = styled.div`
+const Footer = styled.div`
+  margin-top:20px;
   display:flex;
   justify-content:flex-start;
-  > button:not(:last-child) {
-    margin-right:10px;
-  }
 `
 
 class AddNewArticleForm extends Component {
@@ -83,7 +112,7 @@ class AddNewArticleForm extends Component {
     this.state = {
       articleToEdit: [],
       title: '',
-      category: 'Wybierz kategorię..',
+      category: 0,
       content: '',
       summary: '',
       file: '',
@@ -97,19 +126,21 @@ class AddNewArticleForm extends Component {
     const { articleToEdit, fetchCategories } = this.props;
 
     await fetchCategories();
-    articleToEdit ? this.setState({ articleToEdit}, () => {
+    articleToEdit && this.setState({ articleToEdit }, () => {
       this.setState({
         title: articleToEdit[0].title,
         category: articleToEdit[0].category,
         content: articleToEdit[0].content
       })
     })
-    : '';
   }
 
   async handleSubmit() {
     const { title, category, file, content } = this.state;
     const data = new FormData();
+
+    if(title.length === 0 || Boolean(category.length) === 0 || file.length === 0 || content.length === 0)
+      return alert('pola nie mogą byc puste!');
 
     this.setState({fetchingStatus: true})
 
@@ -140,48 +171,58 @@ class AddNewArticleForm extends Component {
     return (
       <Container>
       <Title>{label}</Title>
-        <Wrapper>
-        {
-            <Fragment>
-              <form>
-                <Field>
-                  <Input type='text' placeholder='Tytuł'  maxLength='75' onChange={(e) => this.setState({title: e.target.value})} value={ title }  />
-                </Field>
-                <Field>
-                {
-                  article.categories.length ?
-                  (
-                    <Select onChange={this.handleSelect}>
-                      {
-                        article.categories.map(item => <option key={item.idcategory} value={item.idcategory}>{item.name}</option>)
-                      }
-                    </Select>
-                  ) : (
-                    'Pobieram kategorie..'
-                  )
-                }
-                </Field>
-                <Field>
-                  <Textarea type='text' placeholder='Opis' onChange={(e) => this.setState({content: e.target.value})} value={ content } />
-                </Field>
-                <Field>
-                  <Input type='file' onChange={(e) => this.setState({file: e.target.files[0]})} />
-                </Field>
-              </form>
-              <BtnWrapper>
-                <Button
-                  name='&larr; Cofnij'
-                  onClick={() => { this.props.history.goBack() } }
-                  title='Powrót' />
-                <Button name='Dodaj'
-                  warning
-                  onClick={() => { this.handleSubmit() } }
-                  title='Dodaj artykuł'
-                  isFetching={this.state.fetchingStatus} />
-              </BtnWrapper>
-            </Fragment>
-        }
-        </Wrapper>
+      {
+        article.categories.length
+        ? (
+          <Wrapper>
+          {
+              <Fragment>
+                <form>
+                  <Field>
+                    <Label>Tytuł <span style={{color:'#ee324e'}}>*</span></Label>
+                    <Input type='text' placeholder='Podaj tytuł artykułu'  maxLength='75' onChange={(e) => this.setState({title: e.target.value})} value={ title }  />
+                  </Field>
+                  <Field>
+                  <Label>Kategoria <span style={{color:'#ee324e'}}>*</span></Label>
+                  <Select onChange={this.handleSelect} value={category}>
+                    <option key={0} value={0} disabled>Wybierz kategorię..</option>
+                    {
+                      article.categories.map(
+                        item => <option key={item.idcategory} value={item.idcategory}>{item.name}</option>
+                      )
+                    }
+                  </Select>
+                  </Field>
+                  <Field>
+                    <Label>Treść <span style={{color:'#ee324e'}}>*</span></Label>
+                    <Textarea type='text' placeholder='Podaj treść artykułu' onChange={(e) => this.setState({content: e.target.value})} value={ content } />
+                  </Field>
+                  <Field>
+                    <Label>Zdjęcie <span style={{color:'#ee324e'}}>*</span></Label>
+                    <UploadLabel htmlFor='upload'><FaRegFileImage />Wybierz zdjęcie</UploadLabel>
+                    <Input type='file' id='upload' onChange={(e) => this.setState({file: e.target.files[0]})} />
+                  </Field>
+                </form>
+                <Footer>
+                  <Button
+                    name='&larr; Cofnij'
+                    onClick={() => { this.props.history.goBack() } }
+                    title='Powrót'
+                    margin='0 10px 0 0' />
+                  <Button name='Dodaj'
+                    blue
+                    onClick={() => { this.handleSubmit() } }
+                    title='Dodaj artykuł'
+                    isFetching={this.state.fetchingStatus}
+                    margin='0' />
+                </Footer>
+              </Fragment>
+          }
+          </Wrapper>
+        ) : (
+          <MiniLoader />
+        )
+      }
       </Container>
     )
   }

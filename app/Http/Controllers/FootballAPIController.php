@@ -307,9 +307,9 @@ class FootballAPIController
 		foreach ($squad as $key => $squad_player){
 			if($squad_player->role == 'COACH') $squad_player->position = 'Coach';
 			// UPDATE
-			if(DB::table('players')->where('idPlayer', $squad_player->id)->count())
+			if(DB::table('players')->where('idPlayerApi', $squad_player->id)->count())
 			{
-				Players::where('idPlayer', $squad_player->id)->update([
+				Players::where('idPlayerApi', $squad_player->id)->where('Updateable', 1)->update([
 					'Name' => $squad_player->name,
 					'DateOfBirth' => substr($squad_player->dateOfBirth, 0, 10),
 					'Nationality' => $squad_player->nationality,
@@ -321,7 +321,7 @@ class FootballAPIController
 			else
 			{
 				$player = new Players;
-				$player->idPlayer = $squad_player->id;
+				$player->idPlayerApi = $squad_player->id;
 				$player->Name = $squad_player->name;
 				$player->DateOfBirth = substr($squad_player->dateOfBirth, 0, 10);
 				$player->Nationality = $squad_player->nationality;

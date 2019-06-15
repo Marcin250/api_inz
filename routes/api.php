@@ -48,31 +48,7 @@ Route::get('auth/test/admin', function(Request $request) {
 });
 
 Route::get('test', function(Request $request) {
-    $url = 'http://spys.one/en/socks-proxy-list/';
-    $webcontent = FootballAPIController::curlClientSendPOST($url);
-    $dom = new DomDocument();
-    libxml_use_internal_errors(true);
-    $dom->loadHTML($webcontent);
-    $finder = new DomXPath($dom);
-    $tbody = $dom->getElementsByTagName('tbody')->item(0);
-    $nodes = $finder->query('//font[@class="spy14"]', $tbody);
-    $script = $dom->getElementsByTagName('script')->item(3);
-    $portVariables = $script->textContent;
-    $list = [];
-    $charToReplace = ('+');
-    $stringReplaceWith = ("%2B");
-    foreach ($nodes as $key => $node) {
-        preg_match('/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/', $node->textContent, $ipPort);
-        if(!empty($ipPort)) {
-            $data = explode($ipPort[0], $node->textContent);
-            $data[1] = '(":"+' . substr(substr($data[1], strpos($data[1], "+") + 1), 0, -1). ')';
-            $port = str_replace($charToReplace, $stringReplaceWith, $data[1]);
-            $url = 'https://nodejs-calc.herokuapp.com/getData?script=' . $portVariables . $port;
-            $result = FootballAPIController::curlClientSendGET($url);
-            array_push($list, $ipPort[0] . $result);
-        }
-    }
-    return response()->json($list);
+    
 });
 
 // Use middleware to allow Client-side use API
@@ -162,8 +138,6 @@ Route::group(['middleware' => 'apiauth'], function() {
             Route::put('articles_staff/{id}', 'ArticlesController@staff_update')->name('articles.staff_update');
             Route::put('articles_staff_change_visibility/{id}', 'ArticlesController@staff_change_visibility')->name('articles.staff_change_visibility');
             Route::put('articles_staff_change_main/{id}', 'ArticlesController@staff_change_main')->name('articles.staff_change_main');
-        // Players routes
-            Route::resource('players', 'PlayersController')->except(['index']);
 
             Route::get('users_panel/{days}', 'UsersController@panel')->name('users.panel');
             Route::get('articles_panel/{days}', 'ArticlesController@panel')->name('articles.panel');
@@ -197,6 +171,9 @@ Route::group(['middleware' => 'apiauth'], function() {
         Route::resource('surveys', 'SurveysController')->except(['index']);
         // Survey sets routes
         Route::resource('surveysets', 'SurveySetsController')->except(['index']);
+        // Players routes
+        Route::resource('players', 'PlayersController')->except(['index']);
+        Route::get('players_chenge_updateable/{id}', 'PlayersController@chenge_updateable')->name('players.chenge_updateable');
     });
 
     // Restrict routes only to Root/Admin privileges

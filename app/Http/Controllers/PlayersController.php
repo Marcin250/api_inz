@@ -10,6 +10,8 @@ use App\Http\Controllers\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\FootballAPIController;
 use App\Http\Controllers\CloudinaryController;
+use Facades\App\CacheData\PlayersCache;
+use App\Http\Controllers\ValidatorController;
 
 class PlayersController extends Controller
 {
@@ -44,15 +46,7 @@ class PlayersController extends Controller
 
     public function get_squad()
     {
-        $squad = array();
-        $positions = DB::table('players')->select('position')->groupBy('position')->get();
-        foreach ($positions as $key => $position) {
-            $squad[strtolower($position->position)] = array();
-            $players = DB::table('players')->select('idPlayer as player')->where('position', $position->position)->get();
-            foreach ($players as $key => $player) {
-                array_push($squad[strtolower($position->position)], DB::table('players')->select('idPlayer as id_player', 'Name as name', 'DateOfBirth as date_of_birth', 'Nationality as nationality', 'Image as image', 'Position as position', 'ShirtNumber as shirt_number', 'Role as role')->where('idPlayer', '=', $player->player)->first());
-            }
-        }
+        $squad = PlayersCache::get_squad();
         return response()->json($squad);
     }
 
@@ -76,7 +70,39 @@ class PlayersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if(isset($request->name) && isset($request->date_of_birth) && isset($request->nationality) && isset($request->position) && isset($request->shirt_number) && isset($request->role) && ValidatorController::checkUploadFile($request->file('image'), $check_file_msg))
+        {
+            $player = new Players;
+            $player->idPlayerApi = 0;
+            $player->Name = $request->name;
+            $player->DateOfBirth = $request->date_of_birth;
+            $player->Nationality = $request->nationality;
+            $player->Position = $request->position;
+            $player->ShirtNumber = $request->shirt_number;
+            $player->Role = strtoupper($request->role);
+            $player->Updateable = 0;
+
+            $image_name = 'players' . $player->ShirtNumber . $player->DateOfBirth . time() . $player->Name . '.' . $request->file('image')->getClientOriginalExtension();
+            $destinationFolder = public_path('images') . '/articles/';
+            $request->file('image')->move($destinationFolder, $image_name);
+            $path = $destinationFolder . $image_name;
+
+            $player->Image = CloudinaryController::uploadImage($path, $image_name, 'players');
+
+            if(Players::where('Name', $player->Name)->where('DateOfBirth', $player->DateOfBirth)->where('Nationality', $player->Nationality)->where('Position', $player->Position)->where('ShirtNumber', $player->ShirtNumber)->where('Role', $player->Role)->exists()) 
+            {
+                    return response()->json(['status' => false, 'error' => 'wrong data'], 204);
+            }
+            else
+            {
+                if($player->save())
+                {
+                    return response()->json(['status' => true, 'error' => ''], 201);
+                }
+                else
+                    return response()->json(['status' => false, 'error' => 'wrong data']);
+            }
+        }
     }
 
     /**
@@ -132,6 +158,14 @@ class PlayersController extends Controller
         return response()->json(['status' => $status, 'error' => $msg], 200);
     }
 
+    public function chenge_updateable($id)
+    {
+        if(Players::where('idPlayer', $id)->update(['Updateable' => DB::raw('ABS(Updateable-1)')])) {
+            return response()->json(['status' => true, 'error' => '']);
+        }
+        return response()->json(['status' => false, 'error' => 'wrong data']);
+    }
+
     public function add_statistic($id)
     {
 
@@ -150,6 +184,9 @@ class PlayersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if(Players::where('idPlayer', $id)->delete()) {
+            return response()->json(['status' => true, 'error' => '']);
+        }
+        return response()->json(['status' => false, 'error' => 'wrong data']);
     }
 }

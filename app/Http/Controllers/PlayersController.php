@@ -140,22 +140,54 @@ class PlayersController extends Controller
             Aby wysłać dane (modyfikacja) z FRONT należy przesłać dane metodą POST z dodatkową ukrytą wartością:
             <input type="hidden" name="_method" value="PUT">
         */
-        $status = false;
-        $msg = '';
-        if($request->file('image') != null)
+        if(isset($request->name) && isset($request->date_of_birth) && isset($request->nationality) && isset($request->position) && isset($request->shirt_number) && isset($request->role))
         {
-            $image_name = 'players' . $id . time() . '.' . $request->file('image')->getClientOriginalExtension();
-            $destinationFolder = public_path('images') . '/players/';
-            $request->file('image')->move($destinationFolder, $image_name);
-            $path = $destinationFolder . $image_name;
-            $playerImage = CloudinaryController::uploadImage($path, $image_name, 'players');
-            if(Players::where('idPlayer', $id)->update(['Image' => $playerImage]))
+            $updateable = $request->updateable ?? 0;
+
+            if(ValidatorController::checkUploadFile($request->file('image'), $check_file_msg))
             {
-                $status = true;
-                $msg .= 'image updated.';
+                $image_name = 'players' . $player->ShirtNumber . $player->DateOfBirth . time() . $player->Name . '.' . $request->file('image')->getClientOriginalExtension();
+                $destinationFolder = public_path('images') . '/articles/';
+                $request->file('image')->move($destinationFolder, $image_name);
+                $path = $destinationFolder . $image_name;
+
+                $image = CloudinaryController::uploadImage($path, $image_name, 'players');
+
+                if(Players::where('idPlayer', $id)->update([
+                        'Name' => $request->name,
+                        'DateOfBirth' => $request->date_of_birth,
+                        'Nationality' => $request->nationality,
+                        'Position' => $request->position,
+                        'ShirtNumber' => $request->shirt_number,
+                        'Role' => strtoupper($request->role),
+                        'Image' => $image,
+                        'Updateable' => $updateable
+                    ]))
+                {
+                    PlayersCache::removeFromCache('get_squad');
+                    return response()->json(['status' => true, 'error' => ''], 202);
+                }
+                return response()->json(['status' => false, 'error' => 'wrong data']);
+            }
+            else
+            {
+                if(Players::where('idPlayer', $id)->update([
+                        'Name' => $request->name,
+                        'DateOfBirth' => $request->date_of_birth,
+                        'Nationality' => $request->nationality,
+                        'Position' => $request->position,
+                        'ShirtNumber' => $request->shirt_number,
+                        'Role' => strtoupper($request->role),
+                        'Updateable' => $updateable
+                    ]))
+                {
+                    PlayersCache::removeFromCache('get_squad');
+                    return response()->json(['status' => true, 'error' => ''], 202);
+                }
+                return response()->json(['status' => false, 'error' => 'wrong data']);
             }
         }
-        return response()->json(['status' => $status, 'error' => $msg], 200);
+        return response()->json(['status' => false, 'error' => 'wrong data']);
     }
 
     public function chenge_updateable($id)

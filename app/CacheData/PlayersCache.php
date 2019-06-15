@@ -20,8 +20,7 @@ class PlayersCache
 			$squad = [];
         	$positions = DB::table('players')->select('position')->groupBy('position')->get();
         	foreach ($positions as $key => $position) {
-            	$squad[strtolower($position->position)] = [];
-            	$squad[strtolower($position->position)] = DB::table('players')->select('idPlayer as player', 'Name as name', 'DateOfBirth as date_of_birth', 'Nationality as nationality', 'Image as image', 'Position as position', 'ShirtNumber as shirt_number', 'Role as role')->where('position', $position->position)->get();
+            	$squad[strtolower($position->position)] = DB::table('players')->select('idPlayer as player', 'Name as name', 'DateOfBirth as date_of_birth', 'Nationality as nationality', 'Image as image', 'Position as position', 'ShirtNumber as shirt_number', 'Role as role', 'Updateable as updateable')->where('position', $position->position)->get();
         	}
     		return $squad;
 		});
@@ -32,4 +31,10 @@ class PlayersCache
 		$key = strtoupper($key);
 		return self::CACHE_KEY . '.' . $key;
 	}
+
+	public function removeFromCache($key)
+    {
+        $cacheKey = $this->getCacheKey($key);
+        return cache()->forget($cacheKey);
+    }
 }

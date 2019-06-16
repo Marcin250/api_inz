@@ -20,7 +20,7 @@ class PlayersController extends Controller
         $playerID = $player;
         if(DB::table('players')->where('idPlayer', $playerID)->count())
         {
-            $player = DB::table('players')->select('idPlayer as id_player', 'Name as name', 'DateOfBirth as date_of_birth', 'Nationality as nationality', 'Image as image', 'Position as position', 'ShirtNumber as shirt_number', 'Role as role')->where('idPlayer', '=', $playerID)->first();
+            $player = DB::table('players')->select('idPlayer as id_player', 'Name as name', 'DateOfBirth as date_of_birth', 'Nationality as nationality', 'Image as image', 'Position as position', 'ShirtNumber as shirt_number')->where('idPlayer', '=', $playerID)->first();
         }
     }
 
@@ -70,7 +70,7 @@ class PlayersController extends Controller
      */
     public function store(Request $request)
     {
-        if(isset($request->name) && isset($request->date_of_birth) && isset($request->nationality) && isset($request->position) && isset($request->shirt_number) && isset($request->role) && ValidatorController::checkUploadFile($request->file('image'), $check_file_msg))
+        if(isset($request->name) && isset($request->date_of_birth) && isset($request->nationality) && isset($request->position) && isset($request->shirt_number) && ValidatorController::checkUploadFile($request->file('image'), $check_file_msg))
         {
             $player = new Players;
             $player->idPlayerApi = 0;
@@ -79,7 +79,6 @@ class PlayersController extends Controller
             $player->Nationality = $request->nationality;
             $player->Position = $request->position;
             $player->ShirtNumber = $request->shirt_number;
-            $player->Role = strtoupper($request->role);
             $player->Updateable = 0;
 
             $image_name = 'players' . $player->ShirtNumber . $player->DateOfBirth . time() . $player->Name . '.' . $request->file('image')->getClientOriginalExtension();
@@ -89,7 +88,7 @@ class PlayersController extends Controller
 
             $player->Image = CloudinaryController::uploadImage($path, $image_name, 'players');
 
-            if(Players::where('Name', $player->Name)->where('DateOfBirth', $player->DateOfBirth)->where('Nationality', $player->Nationality)->where('Position', $player->Position)->where('ShirtNumber', $player->ShirtNumber)->where('Role', $player->Role)->exists()) 
+            if(Players::where('Name', $player->Name)->where('DateOfBirth', $player->DateOfBirth)->where('Nationality', $player->Nationality)->where('Position', $player->Position)->where('ShirtNumber', $player->ShirtNumber)->exists()) 
             {
                     return response()->json(['status' => false, 'error' => 'wrong data'], 204);
             }
@@ -140,7 +139,7 @@ class PlayersController extends Controller
             Aby wysłać dane (modyfikacja) z FRONT należy przesłać dane metodą POST z dodatkową ukrytą wartością:
             <input type="hidden" name="_method" value="PUT">
         */
-        if(isset($request->name) && isset($request->date_of_birth) && isset($request->nationality) && isset($request->position) && isset($request->shirt_number) && isset($request->role))
+        if(isset($request->name) && isset($request->date_of_birth) && isset($request->nationality) && isset($request->position) && isset($request->shirt_number))
         {
             $updateable = $request->updateable ?? 0;
 
@@ -159,7 +158,6 @@ class PlayersController extends Controller
                         'Nationality' => $request->nationality,
                         'Position' => $request->position,
                         'ShirtNumber' => $request->shirt_number,
-                        'Role' => strtoupper($request->role),
                         'Image' => $image,
                         'Updateable' => $updateable
                     ]))
@@ -177,7 +175,6 @@ class PlayersController extends Controller
                         'Nationality' => $request->nationality,
                         'Position' => $request->position,
                         'ShirtNumber' => $request->shirt_number,
-                        'Role' => strtoupper($request->role),
                         'Updateable' => $updateable
                     ]))
                 {

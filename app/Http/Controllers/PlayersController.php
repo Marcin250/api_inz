@@ -20,7 +20,7 @@ class PlayersController extends Controller
         $playerID = $player;
         if(DB::table('players')->where('idPlayer', $playerID)->count())
         {
-            $player = DB::table('players')->select('idPlayer as id_player', 'Name as name', 'DateOfBirth as date_of_birth', 'Nationality as nationality', 'Image as image', 'Position as position', 'ShirtNumber as shirt_number')->where('idPlayer', '=', $playerID)->first();
+            $player = DB::table('players')->select('idPlayer as player', 'Name as name', 'DateOfBirth as date_of_birth', 'Nationality as nationality', 'Image as image', 'Position as position', 'ShirtNumber as shirt_number', 'Updateable as updateable')->where('idPlayer', '=', $playerID)->first();
         }
     }
 
@@ -31,10 +31,7 @@ class PlayersController extends Controller
      */
     public function index()
     {
-        //$players = Players::all();
-        //return response()->json(PlayersResource::collection($players));
-        // My Team Squad
-        FootballAPIController::getPlayers_ExternalAPI('https://api.football-data.org/v2/teams/' . env("APP_FootallAPIMyTeamID"), env('APP_FootballAPIToken'));
+        //
     }
 
     public static function update_players()

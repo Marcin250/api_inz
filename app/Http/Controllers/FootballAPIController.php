@@ -305,7 +305,7 @@ class FootballAPIController
 
 		$squad = $data->squad;
 		foreach ($squad as $key => $squad_player){
-			if($squad_player->role == 'COACH') $squad_player->position = 'Coach';
+			if($squad_player->role === 'COACH') $squad_player->position = 'Coach';
 			// UPDATE
 			if(DB::table('players')->where('idPlayerApi', $squad_player->id)->count())
 			{

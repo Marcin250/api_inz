@@ -130,9 +130,10 @@ Route::group(['middleware' => 'apiauth'], function() {
 
     // Restrict routes to Root/Admin or Moderator/Redactor privileges
     Route::group(['middleware' => 'checkprivilege', 'privileges' => ['root', 'administrator', 'moderator', 'redaktor']], function() {
+        // TEST ADMINISTRATOR
         Route::group(['middleware' => 'testadministrator'], function() {
             Route::get('articles_test_admin_delete', 'ArticlesController@test_admin_delete')->name('articles.test_admin_delete');
-        // Articles routes
+            // Articles routes
             Route::resource('articles', 'ArticlesController');
             Route::get('articles_staff_show_article/{id}', 'ArticlesController@staff_show_article')->name('articles.staff_show_article');
             Route::put('articles_staff/{id}', 'ArticlesController@staff_update')->name('articles.staff_update');
@@ -147,6 +148,13 @@ Route::group(['middleware' => 'apiauth'], function() {
                 $analytics = AnalyticsCache::panel($days);
                 return response()->json($analytics);
             });
+            // Surveys routes
+            Route::resource('surveys', 'SurveysController')->except(['index']);
+            // Survey sets routes
+            Route::resource('surveysets', 'SurveySetsController')->except(['index']);
+            // Players routes
+            Route::resource('players', 'PlayersController')->except(['index']);
+            Route::get('players_chenge_updateable/{id}', 'PlayersController@chenge_updateable')->name('players.chenge_updateable');
         });
     });
 
@@ -167,13 +175,6 @@ Route::group(['middleware' => 'apiauth'], function() {
         Route::resource('categories', 'CategoriesController')->except(['index']);
         // Injuries and Suspensions routes
         Route::resource('injuriessuspensions', 'InjuriesSuspensionsController')->except(['index']);
-        // Surveys routes
-        Route::resource('surveys', 'SurveysController')->except(['index']);
-        // Survey sets routes
-        Route::resource('surveysets', 'SurveySetsController')->except(['index']);
-        // Players routes
-        Route::resource('players', 'PlayersController')->except(['index']);
-        Route::get('players_chenge_updateable/{id}', 'PlayersController@chenge_updateable')->name('players.chenge_updateable');
     });
 
     // Restrict routes only to Root/Admin privileges

@@ -23,7 +23,6 @@ class CreatePlayersTable extends Migration
             $table->string('Position', 60)->nullable();
             $table->tinyInteger('ShirtNumber')->nullable();
             $table->tinyInteger('Updateable')->nullable()->default(1);
-            $table->string('Role', 32);
             $table->timestamps();
         });
     }

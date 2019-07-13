@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Facades\App\CacheData\AnalyticsCache;
 use Facades\App\CacheData\UsersCache;
 use App\Http\Controllers\FootballAPIController;
+use Facades\App\CacheData\PlayersCache;
 
 if(!isset($_SESSION)) { session_start(); } 
 
@@ -48,7 +49,7 @@ Route::get('auth/test/admin', function(Request $request) {
 });
 
 Route::get('test', function(Request $request) {
-    
+    return;
 });
 
 // Use middleware to allow Client-side use API

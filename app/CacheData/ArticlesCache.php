@@ -92,7 +92,7 @@ class ArticlesCache
             for($from; $from <= $to; $from = date('Y-m-d',(strtotime( '+1 day', strtotime($from)))))
             {
                 $data = $weekSum->where('day', $from)->first();
-                $count = isset($data->total_comments) ? $data->total_articles : 0;
+                $count = isset($data->total_articles) ? $data->total_articles : 0;
                 array_push($weekSummary, ['day' => $from, 'articles_count' => $count]);
             }
             $panelData = [

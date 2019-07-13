@@ -17,7 +17,7 @@ class MailController extends Controller
 		{
 			SendEmail::dispatch($request->subject, $request->message, $request->users)->onConnection('redis');
         	Log::info('Dispatched mails, starting queue...');
-        	Artisan::call('queue:work', ['--once' => true]);
+        	//Artisan::call('queue:work', ['--once' => true]);
         	// Artisan::call('queue:work', ['--stop-when-empty' => true]); -> The "stop-when-empty" option does not exist.
         	return response()->json(['message' => 'success'], 200);
 		}

@@ -9,13 +9,18 @@ use App\Http\Resources\Clubs as ClubsResource;
 use App\Http\Controllers\Auth;
 use App\Http\Controllers\FootballAPIController;
 use Illuminate\Support\Facades\DB;
+use Facades\App\CacheData\ClubsCache;
 
 class ClubsController extends Controller
 {
     public static function buildClubData(&$club)
     {
-        if(DB::table('clubs')->where('idClub', $club)->count())
+        if(DB::table('clubs')->where('idClub', $club)->count()) {
             $club = DB::table('clubs')->select('Name as name', 'ShortName as short_name', 'Image as image')->where('idClub', $club)->first();
+        }
+        else {
+            $club = NULL;
+        }
     }
 
     /**
@@ -25,12 +30,8 @@ class ClubsController extends Controller
      */
     public function index()
     {
-        //$clubs = Clubs::all();
-        //return response()->json(ClubsResource::collection($clubs));
-        // Spain League Clubs
-        FootballAPIController::getClubs_ExternalAPI('https://api.football-data.org/v2/competitions/PD/teams', 'a526814bc45a452ea371bec3ec82baaf');
-        // UEFA Champions League Clubs
-        FootballAPIController::getClubs_ExternalAPI('https://api.football-data.org/v2/competitions/CL/teams', 'a526814bc45a452ea371bec3ec82baaf');
+        $clubs = ClubsCache::list();
+        return response()->json($clubs);
     }
 
     public static function update_clubs_CL()

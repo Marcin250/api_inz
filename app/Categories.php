@@ -18,7 +18,7 @@ class Categories extends Model
     	'created_at', 'updated_at',
     ];
 
-    public function articles() {
+    public function belongsToArticle() {
         return $this->belongsTo(Articles::class, 'idCategory', 'idCategory');
     }
 }

@@ -19,7 +19,7 @@ class Users extends Resource
             'name' => $this->Name,
             'email' => $this->Email,
             'image' => $this->Image,
-            'category' => $this->hasPrivilege->Name,
+            'privilege' => $this->hasPrivilege->Name,
             'status' => $this->hasStatus->Name,
             'created' =>$this->created_at
         ];

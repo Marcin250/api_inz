@@ -15,13 +15,13 @@ class Users extends Resource
     public function toArray($request)
     {
         return [
-            'iduser' => $this->id,
+            'idUser' => $this->id,
             'name' => $this->Name,
             'email' => $this->Email,
             'image' => $this->Image,
-            'privilege' => $this->idPrivilege,
-            'status' => $this->idStatus,
-            'create_date' =>$this->created_at
+            'category' => $this->hasPrivilege->Name,
+            'status' => $this->hasStatus->Name,
+            'created' =>$this->created_at
         ];
     }
 }

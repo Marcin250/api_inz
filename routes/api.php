@@ -3,8 +3,10 @@
 use Illuminate\Http\Request;
 use Facades\App\CacheData\AnalyticsCache;
 use Facades\App\CacheData\UsersCache;
-use App\Http\Controllers\FootballAPIController;
-use Facades\App\CacheData\PlayersCache;
+use App\Articles;
+use App\Http\Resources\Articles as ArticlesResource;
+use App\User;
+use App\Http\Resources\Users as UsersResource;
 
 if(!isset($_SESSION)) { session_start(); } 
 
@@ -49,7 +51,9 @@ Route::get('auth/test/admin', function(Request $request) {
 });
 
 Route::get('test', function(Request $request) {
-    return;
+    $articles = Articles::get();
+    return response()->json(ArticlesResource::collection($articles)); // tablica Obiektów ->get()
+    return response()->json(ArticlesResource::make($articles)); // pojedyńczy Obiekt ->first()
 });
 
 // Use middleware to allow Client-side use API

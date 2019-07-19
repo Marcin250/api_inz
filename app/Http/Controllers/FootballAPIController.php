@@ -314,7 +314,8 @@ class FootballAPIController
 					'DateOfBirth' => substr($squad_player->dateOfBirth, 0, 10),
 					'Nationality' => $squad_player->nationality,
 					'Position' => $squad_player->position,
-					'ShirtNumber' => $squad_player->shirtNumber]);
+					'ShirtNumber' => $squad_player->shirtNumber
+				]);
 			}
 			// INSERT
 			else

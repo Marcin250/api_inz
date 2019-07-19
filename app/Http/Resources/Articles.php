@@ -15,15 +15,15 @@ class Articles extends Resource
     public function toArray($request)
     {
         return [
-            'idarticle' => $this->idArticle,
-            'category' => $this->idCategory,
-            'user' => $this->idUser,
+            'idArticle' => $this->idArticle,
+            'category' => $this->hasCategory->Name,
+            'user' => new Users($this->hasUser),
             'title' => $this->Title,
             'image' => $this->Image,
             'content' => $this->Content,
             'views' => $this->Views,
-            'create_date' =>$this->created_at,
-            'modify_date' =>$this->updated_at
+            'created' => $this->created_at,
+            'modified' => $this->updated_at
         ];
     }
 }

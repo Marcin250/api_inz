@@ -22,8 +22,13 @@ class Articles extends Resource
             'image' => $this->Image,
             'content' => $this->Content,
             'views' => $this->Views,
+            'visible' => $this->Visible,
+            'main' => $this->Main,
             'created' => $this->created_at,
-            'modified' => $this->updated_at
+            'modified' => $this->updated_at,
+            'commentsCount' => $this->commentsCount(),
+            'likesCount' => $this->likesCount(),
+            'comments' => Comments::collection($this->hasComments),
         ];
     }
 }

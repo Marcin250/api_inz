@@ -15,13 +15,13 @@ class Comments extends Resource
     public function toArray($request)
     {
         return [
-            'idcomment' => $this->idComment,
-            'user' => $this->idUser,
+            'idComment' => $this->idComment,
+            'user' => new Users($this->hasUser),
             'content' => $this->Content,
             'visible' => $this->Visible,
-            'create_date' =>$this->created_at,
-            'modify_date' =>$this->updated_at,
-            'comments' => $this->idReference
+            'created' =>$this->created_at,
+            'modified' =>$this->updated_at,
+            'comments' => $this->collection(\App\Comments::where('idSubReference', $this->idComment)->orderBy('created_at', 'desc')->get())
         ];
     }
 }

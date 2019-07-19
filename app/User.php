@@ -8,7 +8,7 @@ class User extends Authenticatable
     use Notifiable;
 
     protected $fillable = [
-        'name', 'email', 'provider', 'provider_id', 'image',
+        'id', 'name', 'email', 'provider', 'provider_id', 'image',
     ];
 
     protected $hidden = [
@@ -29,4 +29,28 @@ class User extends Authenticatable
     {
         return $this->hasMany(Articles::class, 'idUser', 'id');
     }
+
+    public function hasComments() {
+        return $this->hasMany(Comments::class, 'idUser', 'id');
+    }
+
+    public function hasLikedArticles() {
+        return $this->hasMany(UserLikes::class, 'idUser', 'id');
+    }
+
+    public function articlesCount(): int
+    {
+        return (int) $this->hasArticles()->count();
+    }
+
+    public function commentsCount(): int
+    {
+        return (int) $this->hasComments()->count();
+    }
+
+    public function likesCount(): int
+    {
+        return (int) $this->hasLikedArticles()->count();
+    }
+
 }

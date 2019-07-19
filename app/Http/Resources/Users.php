@@ -20,8 +20,14 @@ class Users extends Resource
             'email' => $this->Email,
             'image' => $this->Image,
             'privilege' => $this->hasPrivilege->Name,
+            'tier' => $this->hasPrivilege->Tier,
             'status' => $this->hasStatus->Name,
-            'created' =>$this->created_at
+            'created' =>$this->created_at,
+            'articlesCount' => $this->articlesCount(),
+            'commentsCount' => $this->commentsCount(),
+            'likesCount' => $this->likesCount(),
+            //'likedArticles' => UserLikes::collection($this->hasLikedArticles()) ?? [],
+            //'latestComments' => Comments::collection($this->hasComments) ?? [],
         ];
     }
 }

@@ -12,5 +12,7 @@ class UserLikes extends Model
     
     protected $fillable = [
     	'idUser', 'idReference', 'Type', 'Reaction',
-];
+    ];
+
+
 }

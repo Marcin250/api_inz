@@ -51,8 +51,12 @@ Route::get('auth/test/admin', function(Request $request) {
 });
 
 Route::get('test', function(Request $request) {
-    $articles = Articles::get();
-    return response()->json(ArticlesResource::collection($articles)); // tablica Obiektów ->get()
+
+//    $user = User::where('id', 171)->first();
+//    return response()->json(UsersResource::make($user));
+
+    $articles = Articles::where('idArticle', 541)->first();
+    //return response()->json(ArticlesResource::collection($articles)); // tablica Obiektów ->get()
     return response()->json(ArticlesResource::make($articles)); // pojedyńczy Obiekt ->first()
 });
 

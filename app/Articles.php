@@ -11,7 +11,7 @@ class Articles extends Model
 	protected $primaryKey = 'idArticle';
 
     protected $fillable = [
-    	'idArticle', 'Topic', 'Image', 'Content', 'Views',
+    	'idArticle', 'Topic', 'Image', 'Content', 'Views', 'Visible', 'Main'
     ];
 
     protected $hidden = [
@@ -27,4 +27,23 @@ class Articles extends Model
     {
         return $this->hasOne(User::class, 'id', 'idUser');
     }
+
+    public function hasComments() {
+        return $this->hasMany(Comments::class, 'idReference', 'idArticle')->where('Visible', 1)->where('idSubReference', 0)->orderBy('created_at', 'desc');
+    }
+
+    public function hasUserLikes() {
+        return $this->hasMany(UserLikes::class, 'idReference', 'idArticle');
+    }
+
+    public function commentsCount(): int
+    {
+        return (int) $this->hasComments()->count();
+    }
+
+    public function likesCount(): int
+    {
+        return (int) $this->hasUserLikes()->count();
+    }
+
 }

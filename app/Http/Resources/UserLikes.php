@@ -15,8 +15,9 @@ class UserLikes extends JsonResource
     public function toArray($request)
     {
         return [
-            'id_article' => $this->idArticle,
-            'user' => $this->idUser
+            'article' => $this->idArticle,
+            'user' => $this->idUser,
+
         ];
     }
 }

@@ -6,29 +6,40 @@ use Illuminate\Http\Resources\Json\Resource;
 
 class Articles extends Resource
 {
-    /**
-     * Transform the resource collection into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
+    private $details;
+
+    public function getDetails($details = false) {
+        $this->details = $details;
+        return $this;
+    }
+
     public function toArray($request)
     {
-        return [
-            'idArticle' => $this->idArticle,
-            'category' => $this->hasCategory->Name,
-            'user' => new Users($this->hasUser),
-            'title' => $this->Title,
-            'image' => $this->Image,
-            'content' => $this->Content,
-            'views' => $this->Views,
-            'visible' => $this->Visible,
-            'main' => $this->Main,
-            'created' => $this->created_at,
-            'modified' => $this->updated_at,
-            'commentsCount' => $this->commentsCount(),
-            'likesCount' => $this->likesCount(),
-            'comments' => Comments::collection($this->hasComments),
+        $resource = [
+            'idArticle' => $this->idArticle ?? null,
+            'category' => $this->hasCategory->Name ?? null,
+            'user' => new Users($this->hasUser) ?? null,
+            'title' => $this->Title ?? null,
+            'image' => $this->Image ?? null,
+            'content' => $this->Content ?? null,
+            'views' => $this->Views ?? null,
+            'visible' => $this->Visible ?? null,
+            'main' => $this->Main ?? null,
+            'created' => $this->created_at ?? null,
+            'modified' => $this->updated_at ?? null,
+            'commentsCount' => $this->commentsCount() ?? 0,
+            'likesCount' => $this->likesCount() ?? 0,
         ];
+
+        if($this->details) {
+            $resource['comments'] = Comments::collection($this->hasComments) ?? [];
+            $resource['usersLiked'] = Users::collection($this->belongsToManyUserLikes) ?? [];
+        }
+
+        return $resource;
+    }
+
+    public static function collection($resource) {
+        return new ArticlesCollection($resource, get_called_class());
     }
 }

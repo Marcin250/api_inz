@@ -6,15 +6,16 @@ use Illuminate\Http\Resources\Json\Resource;
 
 class Users extends Resource
 {
-    /**
-     * Transform the resource collection into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
+    private $details;
+
+    public function getDetails($details = false) {
+        $this->details = $details;
+        return $this;
+    }
+
     public function toArray($request)
     {
-        return [
+        $resource = [
             'idUser' => $this->id,
             'name' => $this->Name,
             'email' => $this->Email,
@@ -26,8 +27,17 @@ class Users extends Resource
             'articlesCount' => $this->articlesCount(),
             'commentsCount' => $this->commentsCount(),
             'likesCount' => $this->likesCount(),
-            //'likedArticles' => UserLikes::collection($this->hasLikedArticles()) ?? [],
-            //'latestComments' => Comments::collection($this->hasComments) ?? [],
         ];
+
+        if($this->details) {
+            $resource['postedComments'] = Comments::collection($this->postedComments) ?? [];
+            $resource['likedArticles'] = Articles::collection($this->belongsToManyArticles) ?? [];
+        }
+
+        return $resource;
+    }
+
+    public static function collection($resource) {
+        return new UsersCollection($resource, get_called_class());
     }
 }

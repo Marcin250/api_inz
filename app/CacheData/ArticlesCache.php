@@ -6,6 +6,7 @@ use App\Articles;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Http\Controllers\ArticlesController;
+use App\Http\Resources\Articles as ArticlesResource;
 
 class ArticlesCache
 {
@@ -165,5 +166,16 @@ class ArticlesCache
         $key = 'article.' . $id;
         $cacheKey = $this->getCacheKey($key);
         return cache()->forget($cacheKey);
+    }
+
+    // for ORM
+
+    public function oArticle($id) {
+        $key = 'oArticle.' . $id;
+        $cacheKey = $this->getCacheKey($key);
+        return cache()->remember($cacheKey, Carbon::now()->addSeconds(2), function() use($id) {
+            $articles = Articles::where('idArticle', $id)->first();
+            return ArticlesResource::make($articles);
+        });
     }
 }

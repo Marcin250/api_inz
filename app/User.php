@@ -25,32 +25,45 @@ class User extends Authenticatable
         return $this->hasOne(Statuses::class, 'idStatus', 'idStatus');
     }
 
-    public function hasArticles()
+    public function postedArticles()
     {
-        return $this->hasMany(Articles::class, 'idUser', 'id');
+        $postedArticles = $this->belongsTo(Articles::class, 'id', 'idUser');
+        return $postedArticles
+            ->where('Visible', 1)
+            ->orderBy('created_at', 'desc')
+            ->pluck('idArticle');
     }
 
-    public function hasComments() {
-        return $this->hasMany(Comments::class, 'idUser', 'id');
+    public function postedComments() {
+        return $this->hasMany(Comments::class, 'idUser', 'id')
+            ->where('Visible', 1)
+            ->orderBy('created_at', 'desc');
     }
 
-    public function hasLikedArticles() {
-        return $this->hasMany(UserLikes::class, 'idUser', 'id');
+    public function likedArticles() {
+        $likedArticles = $this->hasMany(UserLikes::class, 'idUser', 'id');
+        return $likedArticles
+            ->orderBy('created_at', 'desc')
+            ->pluck('idReference');
+    }
+
+    public function belongsToManyArticles() {
+        return $this->belongsToMany(Articles::class, 'user_likes', 'idUser', 'idReference');
     }
 
     public function articlesCount(): int
     {
-        return (int) $this->hasArticles()->count();
+        return (int) $this->postedArticles()->count();
     }
 
     public function commentsCount(): int
     {
-        return (int) $this->hasComments()->count();
+        return (int) $this->postedComments()->count();
     }
 
     public function likesCount(): int
     {
-        return (int) $this->hasLikedArticles()->count();
+        return (int) $this->likedArticles()->count();
     }
 
 }

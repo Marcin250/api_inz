@@ -6,10 +6,9 @@ use App\User;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Http\Controllers\UsersController;
-use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\ArticlesController;
-use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Cache;
+use App\Http\Resources\Users as UsersResource;
 
 class UsersCache
 {
@@ -136,4 +135,15 @@ class UsersCache
 		Cache::forget($cacheKey);
 		return;
 	}
+
+    // for ORM
+
+    public function oUser($id) {
+        $key = 'oUser.' . $id;
+        $cacheKey = $this->getCacheKey($key);
+        return cache()->remember($cacheKey, Carbon::now()->addSeconds(2), function() use($id) {
+            $user = User::where('id', 171)->first();
+            return UsersResource::make($user);
+        });
+    }
 }

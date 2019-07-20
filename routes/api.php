@@ -3,10 +3,6 @@
 use Illuminate\Http\Request;
 use Facades\App\CacheData\AnalyticsCache;
 use Facades\App\CacheData\UsersCache;
-use App\Articles;
-use App\Http\Resources\Articles as ArticlesResource;
-use App\User;
-use App\Http\Resources\Users as UsersResource;
 
 if(!isset($_SESSION)) { session_start(); } 
 
@@ -50,14 +46,18 @@ Route::get('auth/test/admin', function(Request $request) {
     return redirect(env('APP_URL'));
 });
 
-Route::get('test', function(Request $request) {
+Route::get('test/{id}', function(Request $request, $id) {
+    // make() + ->first(), collection() + ->get()
+    if($id === '171') {
+        return \App\Http\Resources\Users::make(\App\User::where('id', $id)->first())->getDetails($request->details ?? false);
+    }
+    elseif($id === '541') {
+        return \App\Http\Resources\Articles::make(\App\Articles::where('idArticle', $id)->first())->getDetails($request->details ?? false);
+    }
 
-//    $user = User::where('id', 171)->first();
-//    return response()->json(UsersResource::make($user));
-
-    $articles = Articles::where('idArticle', 541)->first();
-    //return response()->json(ArticlesResource::collection($articles)); // tablica Obiektów ->get()
-    return response()->json(ArticlesResource::make($articles)); // pojedyńczy Obiekt ->first()
+    return response()->json([
+        'message' => 'dozwolone numery {id} to: 171, 541; dozwolony dodatkowy parametr ?details=1',
+    ]);
 });
 
 // Use middleware to allow Client-side use API

@@ -11,11 +11,10 @@ class Comments extends Model
     protected $primaryKey = 'idComment';
 
     protected $fillable = [
-        'idReference', 'idSubReference', 'Type', 'Content', 'Visible', 'created_at', 'updated_at'
+        'idReference', 'idSubReference', 'idUser', 'Type', 'Content', 'Visible', 'created_at', 'updated_at'
     ];
 
     protected $hidden = [
-        'idUser',
     ];
 
     public function hasUser()

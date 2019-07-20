@@ -29,11 +29,14 @@ class Articles extends Model
     }
 
     public function hasComments() {
-        return $this->hasMany(Comments::class, 'idReference', 'idArticle')->where('Visible', 1)->where('idSubReference', 0)->orderBy('created_at', 'desc');
+        return $this->hasMany(Comments::class, 'idReference', 'idArticle')
+            ->where('Visible', 1)
+            ->where('idSubReference', 0)
+            ->orderBy('created_at', 'desc');
     }
 
-    public function hasUserLikes() {
-        return $this->hasMany(UserLikes::class, 'idReference', 'idArticle');
+    public function belongsToManyUserLikes() {
+        return $this->belongsToMany(User::class, 'user_likes', 'idReference', 'idUser');
     }
 
     public function commentsCount(): int
@@ -43,7 +46,7 @@ class Articles extends Model
 
     public function likesCount(): int
     {
-        return (int) $this->hasUserLikes()->count();
+        return (int) $this->belongsToManyUserLikes()->count();
     }
 
 }

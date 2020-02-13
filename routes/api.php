@@ -18,7 +18,7 @@ if(!isset($_SESSION)) { session_start(); }
 */
 
 Route::get('/', function (Request $request) {
-    return response->json([
+    return response()->json([
         'api_version' => 2.0
     ]);
 });

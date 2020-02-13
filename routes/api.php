@@ -17,8 +17,10 @@ if(!isset($_SESSION)) { session_start(); }
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('/', function (Request $request) {
+    return response->json([
+        'api_version' => 2.0
+    ]);
 });
 
 // Google OAuth2
